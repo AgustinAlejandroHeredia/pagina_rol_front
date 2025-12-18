@@ -1,6 +1,6 @@
 Debe exister un archivo ".env" con las variables:
 
-AUTH0_APLICATION_DOMAIN=auth0_domain_aplication
-AUTH0_CLIENT_ID=auth0_client_id_aplication
-AUTH0_AUDIENCE=auth0_audience_api
-AUTH0_CLIENT_SECRET=auth0_client_secret_aplication
+VITE_AUTH0_DOMAIN=auth0_domain_aplication
+VITE_AUTH0_CLIENT_ID=auth0_client_id_aplication
+VITE_AUTH0_AUDIENCE=auth0_audience_api
+VITE_API_URL=backend_url
