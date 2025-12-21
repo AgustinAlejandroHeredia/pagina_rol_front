@@ -1,11 +1,22 @@
-import LoginButton from "../components/LoginButton";
+import LoginButton from "../components/LoginButton"
+import { useAuth0 } from "@auth0/auth0-react"
+import { Navigate } from "react-router-dom"
 
 export function LoginPage() {
+  const { isAuthenticated, isLoading } = useAuth0()
 
-    return (
-        <div>
-            <h1>Login temporal</h1>
-            <LoginButton/>
-        </div>
-    )
+  if (isLoading) {
+    return <p>Cargando...</p>
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />
+  }
+  
+  return (
+    <div>
+      <h1>Login temporal</h1>
+      <LoginButton />
+    </div>
+  )
 }

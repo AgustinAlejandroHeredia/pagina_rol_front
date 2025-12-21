@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 
 import { PrivateRoute } from "./components/PrivateRoute"
 import { LoginPage } from "./pages/LoginPage"
@@ -9,15 +9,21 @@ export function AppRouter() {
   return (
     <Routes>
 
-      {/* Rutas públicas */}
+      {/* Redirect raiz */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
+      {/* Rutas publicas */}
       <Route path="/login" element={<LoginPage />} />
 
       {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
         </Route>
       </Route>
+
+      {/* Fallback opcional (con 404) */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
 
     </Routes>
   )

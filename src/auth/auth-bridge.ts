@@ -2,4 +2,5 @@
 
 export interface AuthBridge {
   getAccessToken(): Promise<string | null>;
+  getPermissions(): Promise<string[]>
 }

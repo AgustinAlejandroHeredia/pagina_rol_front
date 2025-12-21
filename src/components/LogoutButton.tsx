@@ -1,16 +1,23 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
-const LogoutButton = () => {
+type LogoutButtonProps = {
+  className?: string
+}
+
+const LogoutButton = ({ className = "" }: LogoutButtonProps) => {
   const { logout, isAuthenticated } = useAuth0();
+
+  if (!isAuthenticated) return null;
+
   return (
-    isAuthenticated && (
-      <button
-        onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-        className="button logout"
-      >
-        Log Out
-      </button>
-    )
+    <button
+      onClick={() =>
+        logout({ logoutParams: { returnTo: `${window.location.origin}/login` } })
+      }
+      className={`button logout ${className}`}
+    >
+      Log Out
+    </button>
   );
 };
 
