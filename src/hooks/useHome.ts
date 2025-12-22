@@ -6,11 +6,9 @@ import type { Campaign } from "../types/campaign";
 
 export function useHome() {
 
-    const [data, setData] = useState<any>(null)
     const [error, setError] = useState<string | null>(null)
 
     const [campaigns, setCampaigns] = useState<Campaign[]>([])
-    const [errorCampaigns, setErrorCampaigns] = useState<string | null>(null)
 
     const [loading, setLoading] = useState(true)
 
@@ -18,9 +16,6 @@ export function useHome() {
         const loadHome = async () => {
             try {
                 setLoading(true)
-
-                const homeData = await HomeService.getDatosHome()
-                setData(homeData)
 
                 const campaignsData = await HomeService.getUserCampaigns()
                 setCampaigns(campaignsData)
@@ -35,5 +30,5 @@ export function useHome() {
         loadHome()
     }, [])
     
-    return { data, campaigns, loading, error }
+    return { campaigns, loading, error }
 }

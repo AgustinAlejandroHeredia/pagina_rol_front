@@ -5,7 +5,7 @@ import { useAuth0Bridge } from '../auth/auth0-bridge'
 
 export function HomePage() {
   const { isAuthenticated } = useAuth0()
-  const { data, campaigns, loading, error } = useHome() // HOOK
+  const { campaigns, loading, error } = useHome() // HOOK
 
   const [permissions, setPermissions] = useState<string[]>([])
 
