@@ -54,6 +54,11 @@ export const Navbar = () => {
           <div className='welcome-text'>Welcome home traveler!</div>
         )}
 
+        {/* Contenido para CREATE */}
+        {currentPath === '/create_campaign' && (
+          <div className='welcome-text'>Creating campaign...</div>
+        )}
+
         {/* Contenido para ADMIN */}
         {currentPath === '/admin_options' && (
           <div className='welcome-text'>Welcome admin, time to play god</div>

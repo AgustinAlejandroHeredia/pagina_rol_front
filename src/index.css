@@ -21,6 +21,8 @@
   /* Estados */
   --color-danger: #ef4444;
   --color-success: #22c55e;
+  --color-create: #1ac7b0;
+  --color-create-plus: #26e3ca;
 }
 
 * {
@@ -282,6 +284,13 @@ body {
   margin: 1rem 2rem 1rem;
 }
 
+.page-create-message {
+  text-align: left;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin: 0rem 0rem 0.5rem;
+}
+
 .content-container {
   width: 100%;
   max-width: 1200px;
@@ -381,6 +390,121 @@ body {
 
 p, h1, h2, h3 {
   margin: 0;
+}
+
+.create-campaign-card {
+  position: relative;
+  background-color: var(--color-navbar);
+  border-radius: 12px;
+
+  padding: 2rem;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+
+  margin-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* BORDE ANIMADO SIEMPRE VISIBLE */
+.create-campaign-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    270deg,
+    #60a5fa,
+    #22c55e,
+    #a855f7,
+    #60a5fa
+  );
+  background-size: 600% 600%;
+  padding: 2px;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+
+  opacity: 0.9;
+  z-index: -1;
+
+  animation: gradientBorder 10s ease infinite;
+}
+
+/* OPCIONAL: leve glow al focus interno */
+.create-campaign-card:focus-within {
+  box-shadow:
+    0 0 0 1px rgba(96, 165, 250, 0.35),
+    0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+.create-campaign-card input[type="text"] {
+  width: 100%;           /* ocupa todo el ancho de la card */
+  height: 40px;          /* tamaño fijo */
+  padding: 0 0.75rem;    /* espacio interno */
+  
+  background-color: #e0e0e0;  /* gris claro de fondo */
+  color: #000;               /* texto negro */
+  
+  border: 1px solid #b0b0b0; /* borde gris medio */
+  border-radius: 8px;        /* bordes redondeados */
+  
+  font-size: 0.95rem;
+}
+
+.create-campaign-card input::placeholder {
+  color: #7a7a7a;           /* placeholder gris más oscuro */
+}
+
+.create-campaign-card input:focus {
+  outline: none;            /* sin outline azul por defecto */
+  border-color: #60a5fa;    /* opcional: borde azul al hacer focus */
+}
+
+.create-campaign-button {
+  padding: 10px 20px;
+  background-color: var(--color-create);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  align-self: flex-end;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.2s ease;
+}
+
+.create-campaign-button:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  background-color: var(--color-create-plus);
+}
+
+.create-campaign-button:active {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.create-campaign-message-successful {
+  color: var(--color-create);
+  font-weight: bold;
+  align-self: flex-end;
+}
+
+.create-campaign-message-unsuccessful {
+  
 }
 
 
