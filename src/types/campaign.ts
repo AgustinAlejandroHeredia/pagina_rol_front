@@ -4,6 +4,7 @@ export interface Player {
 }
 
 export interface Campaign {
+  _id: string
   campaignName: string
   players: Player[]
 }

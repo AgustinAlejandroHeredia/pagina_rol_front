@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useHome } from '../hooks/useHome'
 import { useAuth0Bridge } from '../auth/auth0-bridge'
+import { useNavigate } from 'react-router-dom'
 
 export function HomePage() {
+
+  const navigate = useNavigate()
+
   const { isAuthenticated } = useAuth0()
   const { campaigns, loading, error } = useHome() // HOOK
 
@@ -32,6 +36,26 @@ export function HomePage() {
   
   const isAdmin = permissions.includes("admin:page");
 
+  const handleJoinCampaign = () => {
+    console.log("JOIN CAMPAIGN")
+    navigate("/join_campaign")
+  }
+
+  const handleCreateCampaign = () => {
+    console.log("CREATE CAMPAIGN")
+    navigate("/create_campaign")
+  }
+
+  const handleOpenCampaign = (campaign_id: string) => {
+    console.log("OPEN CAMPAIGN WITH ID ", campaign_id)
+    navigate(`/open_campaign/${campaign_id}`)
+  }
+
+  const handleAdminOptions = () => {
+    console.log("ADMINS OPTIONS")
+    navigate("/admin_options")
+  }
+
   return (
     <div className='content-container'>
 
@@ -39,11 +63,11 @@ export function HomePage() {
 
       <div className={`cards-container ${isAuthenticated ? 'two-columns' : 'one-column'}`}>
         {/* visible para todos */}
-        <div className="info-card">
+        <div className="info-card" onClick={handleJoinCampaign}>
           <h4 className='info-simple'>Join new campaign</h4>
         </div>
 
-        <div className="info-card">
+        <div className="info-card" onClick={handleCreateCampaign}>
           <h4 className='info-simple'>Create new campaign</h4>
         </div>
 
@@ -54,7 +78,11 @@ export function HomePage() {
           <h5 className="page-sub-message">Your current campaigns:</h5>
 
           {campaigns.map((campaign) => (
-            <div key={campaign.campaignName} className="info-card">
+            <div 
+              key={campaign._id} 
+              className="info-card"
+              onClick={() => handleOpenCampaign(campaign._id)}
+            >
               <h4>{campaign.campaignName}</h4>
 
               {campaign.players.map((player, index) => (
@@ -72,7 +100,7 @@ export function HomePage() {
       {isAuthenticated && isAdmin && (
         <div>
           <h5 className='page-sub-message'>Only for high level players, the admin options...</h5>
-          <div className="info-card">
+          <div className="info-card" onClick={handleAdminOptions}>
             <h4 className='info-simple'>Let's play god now</h4>
           </div>
         </div>

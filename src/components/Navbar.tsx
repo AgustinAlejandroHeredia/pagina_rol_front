@@ -36,7 +36,7 @@ export const Navbar = () => {
     <nav className="navbar">
       {/* Izquierda */}
       <div className="navbar-left">
-        <Link to="/" className="logo tooltip">
+        <Link to="/home" className="logo tooltip">
           <img
             src={logo}
             alt="AppLogo"
@@ -52,6 +52,11 @@ export const Navbar = () => {
         {/* Contenido para HOME */}
         {currentPath === '/home' && (
           <div className='welcome-text'>Welcome home traveler!</div>
+        )}
+
+        {/* Contenido para ADMIN */}
+        {currentPath === '/admin_options' && (
+          <div className='welcome-text'>Welcome admin, time to play god</div>
         )}
 
       </div>

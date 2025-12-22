@@ -3,10 +3,11 @@
 /* COLORES */
 :root {
   /* Colores base */
-  --color-background2: #1a1e27;
-  --color-background: #041762;
+  --color-background_old: #1a1e27;
+  --color-background2: #041762;
+  --color-background: #020e3b;
 
-  --color-navbar2: #32405f;
+  --color-navbar_old: #32405f;
   --color-navbar: #7f62d9;
 
   --color-border: #e5e7eb;
