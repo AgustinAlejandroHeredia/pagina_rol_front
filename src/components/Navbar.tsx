@@ -51,7 +51,7 @@ export const Navbar = () => {
         
         {/* Contenido para HOME */}
         {currentPath === '/home' && (
-          <div>Welcome home traveler!</div>
+          <div className='welcome-text'>Welcome home traveler!</div>
         )}
 
       </div>

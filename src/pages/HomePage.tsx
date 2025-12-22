@@ -5,31 +5,19 @@ import { useAuth0Bridge } from '../auth/auth0-bridge'
 
 export function HomePage() {
   const { isAuthenticated } = useAuth0()
-  const { data, loading, error } = useHome()
+  const { data, campaigns, loading, error } = useHome() // HOOK
 
-  const [permissions, setPermissions] = useState<string[]>([]);
-  const [loading_perms, setLoadingPerms] = useState(true);
+  const [permissions, setPermissions] = useState<string[]>([])
 
   const authBridge = useAuth0Bridge()
 
   useEffect(() => {
-    /*
-    const checkRole = async () => {
-      const admin_rol_page = await hasRole('Admin rol page')
-      setIsAdmin(admin_rol_page)
-    }
-
-    if (isAuthenticated) {
-      checkRole()
-    }
-    */
 
     let mounted = true
 
     authBridge.getPermissions().then((perms) => {
       if(mounted){
         setPermissions(perms)
-        setLoadingPerms(false)
       }
     })
 
@@ -39,8 +27,8 @@ export function HomePage() {
 
   }, [isAuthenticated])
 
-  if (loading) return <p>Cargando...</p>
-  if (error) return <p>Error al cargar datos</p>
+  if (loading) return <h1>Loading content...</h1>
+  if (error) return <h1>There was an error... must be the will of god... we sorry</h1>
   
   const isAdmin = permissions.includes("admin:page");
 
@@ -52,20 +40,40 @@ export function HomePage() {
       <div className={`cards-container ${isAuthenticated ? 'two-columns' : 'one-column'}`}>
         {/* visible para todos */}
         <div className="info-card">
-          <h4>Unirse a una campaña</h4>
+          <h4 className='info-simple'>Join new campaign</h4>
         </div>
 
         <div className="info-card">
-          <h4>Crear nueva campaña</h4>
+          <h4 className='info-simple'>Create new campaign</h4>
         </div>
 
       </div>
 
+      {isAuthenticated && (
+        <div>
+          <h5 className="page-sub-message">Your current campaigns:</h5>
+
+          {campaigns.map((campaign) => (
+            <div key={campaign.campaignName} className="info-card">
+              <h4>{campaign.campaignName}</h4>
+
+              {campaign.players.map((player, index) => (
+                <div key={`${player.alias}-${index}`}>
+                  <h5>
+                    - {player.realName} in the role of {player.alias}
+                  </h5>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+
       {isAuthenticated && isAdmin && (
         <div>
-          <h5 className='page-message'>Solo para nivel elevado, opciones de administrador...</h5>
+          <h5 className='page-sub-message'>Only for high level players, the admin options...</h5>
           <div className="info-card">
-            <h4>Ir a opciones de administrador</h4>
+            <h4 className='info-simple'>Let's play god now</h4>
           </div>
         </div>
       )}

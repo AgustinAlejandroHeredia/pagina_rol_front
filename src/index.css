@@ -3,8 +3,12 @@
 /* COLORES */
 :root {
   /* Colores base */
-  --color-background: #1a1e27;
-  --color-navbar: #32405f;
+  --color-background2: #1a1e27;
+  --color-background: #041762;
+
+  --color-navbar2: #32405f;
+  --color-navbar: #7f62d9;
+
   --color-border: #e5e7eb;
   --color-border_action: #60a5fa;
   --color-text: #e2e8f0;
@@ -98,6 +102,12 @@ body {
   animation: gradientBorder 6s ease infinite;
 }
 
+.welcome-text {
+  font-size: 1.2rem;
+  font-weight: 700; /* maxed */
+  color: var(--color-text);
+}
+
 .tooltip {
   position: relative;
   display: inline-flex;
@@ -108,7 +118,7 @@ body {
   left: 300%;
   transform: translateY(-50%);
 
-  background-color: var(--color-navbar);
+  background-color: var(--color-background);
   color: var(--color-text);
   padding: 0.25rem 0.6rem;
 
@@ -263,6 +273,13 @@ body {
   margin: 1rem 2rem 1rem;
 }
 
+.page-sub-message {
+  text-align: left;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin: 1rem 2rem 1rem;
+}
+
 .content-container {
   width: 100%;
   max-width: 1200px;
@@ -304,6 +321,8 @@ body {
     box-shadow 0.25s ease;
 
   cursor: pointer;
+
+  margin-bottom: 20px;
 }
 
 .info-card:hover {
@@ -352,6 +371,10 @@ body {
 .info-card:hover::before {
   opacity: 1;
   animation: gradientBorder 6s ease infinite;
+}
+
+.info-simple {
+  text-align: center;
 }
 
 p, h1, h2, h3 {

@@ -11,8 +11,6 @@ type JwtPayload = {
 export function useAuth0Bridge(): AuthBridge {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
-  console.log("Obteniendo token...");
-
   return {
 
     // Pide el token y lo devuelve
@@ -22,8 +20,6 @@ export function useAuth0Bridge(): AuthBridge {
       }
 
       const token = await getAccessTokenSilently()
-
-      console.log("TOKEN OBTENIDO:", token);
 
       return token;
     },

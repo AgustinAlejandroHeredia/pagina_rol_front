@@ -2,21 +2,38 @@
 import { useEffect, useState } from "react";
 import { HomeService } from "../services/HomeService";
 
+import type { Campaign } from "../types/campaign";
+
 export function useHome() {
+
     const [data, setData] = useState<any>(null)
-    const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
+    const [campaigns, setCampaigns] = useState<Campaign[]>([])
+    const [errorCampaigns, setErrorCampaigns] = useState<string | null>(null)
 
-        HomeService.getDatosHome()
-            .then(setData)
-            .catch((err) => {
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const loadHome = async () => {
+            try {
+                setLoading(true)
+
+                const homeData = await HomeService.getDatosHome()
+                setData(homeData)
+
+                const campaignsData = await HomeService.getUserCampaigns()
+                setCampaigns(campaignsData)
+
+            } catch (err: any) {
                 console.error("Error en useHome: ", err)
                 setError(err.message || "Error desconocido")
-            })
-            .finally(() => setLoading(false))
+            } finally {
+                setLoading(false)
+            }
+        }
+        loadHome()
     }, [])
     
-    return { data, loading, error }
+    return { data, campaigns, loading, error }
 }

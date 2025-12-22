@@ -15,7 +15,6 @@ const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
 
 // se carga de primeras el Auth0Bridge
 function Bootstrap() {
-  console.log("BOOTSTRAP")
 
   const authBridge = useAuth0Bridge();
 
