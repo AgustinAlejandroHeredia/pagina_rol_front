@@ -30,7 +30,7 @@ createRoot(document.getElementById('root')!).render(
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: `${window.location.origin}/home`,
+        redirect_uri: `${window.location.origin}/post_login_check`,
         audience: "https://rol-api/",
       }}
     >

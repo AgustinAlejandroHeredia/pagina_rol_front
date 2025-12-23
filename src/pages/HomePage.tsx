@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { useHome } from '../hooks/useHome'
 import { useAuth0Bridge } from '../auth/auth0-bridge'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../components/Loading'
 
 export function HomePage() {
 
@@ -31,7 +32,8 @@ export function HomePage() {
 
   }, [isAuthenticated])
 
-  if (loading) return <h1>Loading content...</h1>
+  if (loading) return <Loading />
+  
   if (error) return <h1>There was an error... must be the will of god... we sorry</h1>
   
   const isAdmin = permissions.includes("admin:page");

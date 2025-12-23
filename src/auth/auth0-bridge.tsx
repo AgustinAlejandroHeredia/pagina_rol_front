@@ -21,6 +21,8 @@ export function useAuth0Bridge(): AuthBridge {
 
       const token = await getAccessTokenSilently()
 
+      //console.log("TOKEN OBTENIDO : ", token)
+
       return token;
     },
 

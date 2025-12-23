@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom"
 
 import { PrivateRoute } from "./components/PrivateRoute"
 import { LoginPage } from "./pages/LoginPage"
+import { PostLoginCheck } from "./pages/PostLoginCheck"
 import { HomePage } from "./pages/HomePage"
 import { JoinCampaign } from "./pages/JoinCampaign"
 import { OpenCampaign } from "./pages/OpenCampaign"
@@ -21,6 +22,10 @@ export function AppRouter() {
 
       {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
+
+        <Route element={<MainLayout />}>
+          <Route path="/post_login_check" element={<PostLoginCheck />}/>
+        </Route>
 
         <Route element={<MainLayout />}>
           <Route path="/home" element={<HomePage />} />
