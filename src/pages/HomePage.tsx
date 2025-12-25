@@ -1,42 +1,21 @@
-import { useEffect, useState } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
+// HOOK
 import { useHome } from '../hooks/useHome'
-import { useAuth0Bridge } from '../auth/auth0-bridge'
+
+// NAVIGATOR
 import { useNavigate } from 'react-router-dom'
+
+// LOADING ICON
 import Loading from '../components/Loading'
 
 export function HomePage() {
 
   const navigate = useNavigate()
 
-  const { isAuthenticated } = useAuth0()
-  const { campaigns, loading, error } = useHome() // HOOK
-
-  const [permissions, setPermissions] = useState<string[]>([])
-
-  const authBridge = useAuth0Bridge()
-
-  useEffect(() => {
-
-    let mounted = true
-
-    authBridge.getPermissions().then((perms) => {
-      if(mounted){
-        setPermissions(perms)
-      }
-    })
-
-    return () => {
-      mounted = false
-    }
-
-  }, [isAuthenticated])
+  const { campaigns, isAuthenticated, isAdmin, loading, error } = useHome() // HOOK
 
   if (loading) return <Loading />
   
   if (error) return <h1>There was an error... must be the will of god... we sorry</h1>
-  
-  const isAdmin = permissions.includes("admin:page");
 
   const handleJoinCampaign = () => {
     console.log("JOIN CAMPAIGN")
@@ -50,7 +29,7 @@ export function HomePage() {
 
   const handleOpenCampaign = (campaign_id: string) => {
     console.log("OPEN CAMPAIGN WITH ID ", campaign_id)
-    navigate(`/open_campaign/${campaign_id}`)
+    navigate(`/view_campaign/${campaign_id}`)
   }
 
   const handleAdminOptions = () => {

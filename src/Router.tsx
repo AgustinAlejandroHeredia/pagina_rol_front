@@ -5,10 +5,11 @@ import { LoginPage } from "./pages/LoginPage"
 import { PostLoginCheck } from "./pages/PostLoginCheck"
 import { HomePage } from "./pages/HomePage"
 import { JoinCampaign } from "./pages/JoinCampaign"
-import { OpenCampaign } from "./pages/OpenCampaign"
+import { ViewCampaign } from "./pages/ViewCampaign"
 import { CreateCampaign } from "./pages/CreateCampaign"
 import { AdminOptions } from "./pages/AdminOptions"
 import { MainLayout } from "./layouts/MainLayout"
+import { CoordinatorLayout } from "./layouts/CoordinatorLayout"
 
 export function AppRouter() {
   return (
@@ -43,8 +44,8 @@ export function AppRouter() {
           <Route path="/admin_options" element={< AdminOptions />} />
         </Route>
 
-        <Route element={<MainLayout />}>
-          <Route path="/open_campaign/:campaignId" element={<OpenCampaign />} />
+        <Route element={<CoordinatorLayout />}>
+          <Route path="/view_campaign/:campaignId" element={<ViewCampaign />} />
         </Route>
 
       </Route>

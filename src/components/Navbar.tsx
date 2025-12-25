@@ -11,6 +11,9 @@ import { useEffect, useRef, useState } from 'react'
 // Personalizacion por rutas
 import { useLocation } from 'react-router-dom'
 
+// COORDINATOR
+import { useCoordinator } from '../layouts/Coordinator'
+
 export const Navbar = () => {
   const { user, isAuthenticated, isLoading } = useAuth0()
   const [open, setOpen] = useState(false)
@@ -18,6 +21,8 @@ export const Navbar = () => {
 
   const location = useLocation()
   const currentPath = location.pathname
+
+  const { isLoadingCampaign } = useCoordinator();
 
   useEffect(() => {
     // se define el manejador del evento de tocar fuera del menu (menu que aparece al tocar icono de usuario)
@@ -57,6 +62,11 @@ export const Navbar = () => {
         {/* Contenido para CREATE */}
         {currentPath === '/create_campaign' && (
           <div className='welcome-text'>Creating campaign...</div>
+        )}
+
+        {/* Contenido para VIEW CAMPAIGN */}
+        {currentPath.startsWith('/view_campaign') && !isLoadingCampaign && (
+          <div className='welcome-text'>Enjoy your campaign</div>
         )}
 
         {/* Contenido para ADMIN */}

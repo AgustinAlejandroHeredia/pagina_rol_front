@@ -2,19 +2,33 @@
 import { useEffect, useState } from "react";
 import { HomeService } from "../services/HomeService";
 
-import type { Campaign } from "../types/campaign";
+import type { CampaignHome } from "../types/types";
+
+import { useAuth0Bridge } from '../auth/auth0-bridge'
+import { useAuth0 } from "@auth0/auth0-react";
 
 export function useHome() {
 
     const [error, setError] = useState<string | null>(null)
 
-    const [campaigns, setCampaigns] = useState<Campaign[]>([])
+    const [campaigns, setCampaigns] = useState<CampaignHome[]>([])
 
     const [loading, setLoading] = useState(true)
+
+    const [isAdmin, setIsAdmin] = useState<boolean>(false)
+
+    const { isAuthenticated } = useAuth0()
+    const authBridge = useAuth0Bridge()
 
     useEffect(() => {
         const loadHome = async () => {
             try {
+
+                const perms = await authBridge.getPermissions()
+                if(perms.includes("admin:page")){
+                    setIsAdmin(true)
+                }
+
                 setLoading(true)
 
                 const campaignsData = await HomeService.getUserCampaigns()
@@ -28,7 +42,7 @@ export function useHome() {
             }
         }
         loadHome()
-    }, [])
+    }, [isAuthenticated])
     
-    return { campaigns, loading, error }
+    return { campaigns, isAuthenticated, isAdmin, loading, error }
 }
