@@ -7,6 +7,7 @@ import { useCoordinator } from "../layouts/Coordinator";
 // AUTH0
 import { useAuth0 } from "@auth0/auth0-react";
 import type { Campaign } from "../types/types";
+import { useAuth0Bridge } from "../auth/auth0-bridge";
 
 export function useViewCampaign(campaign_id: string) {
 
@@ -14,12 +15,15 @@ export function useViewCampaign(campaign_id: string) {
 
     const [loading, setLoading] = useState(true)
 
-    const { isAuthenticated, isLoading: authLoading } = useAuth0()
-
     const [campaign, setCampaign] = useState<Campaign | null>(null)
+
+    // AUTH0
+    const { isAuthenticated, isLoading: authLoading } = useAuth0()
+    const authBridge = useAuth0Bridge()
 
     // COORDINATOR
     const { setIsLoadingCampaign } = useCoordinator()
+    const { setIsDungeonMaster } = useCoordinator()
 
     useEffect(() => {
         if(!isAuthenticated || authLoading) return
@@ -27,8 +31,19 @@ export function useViewCampaign(campaign_id: string) {
         const loadViewCampaign = async () => {
 
             setIsLoadingCampaign(true)
+            setIsDungeonMaster(false)
 
             try {
+
+                const result_dm = await ViewCampaignService.isDungeonMaster()
+                if (result_dm) {
+                    setIsDungeonMaster(true)
+                }
+
+                const perms = await authBridge.getPermissions()
+                if(perms.includes("admin:page")){
+                    setIsDungeonMaster(true)
+                }
 
                 const campaign = await ViewCampaignService.getCampaign(campaign_id)
                 setCampaign(campaign)

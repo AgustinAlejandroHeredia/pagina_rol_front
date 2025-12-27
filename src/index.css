@@ -520,14 +520,14 @@ p, h1, h2, h3 {
 }
 
 .loading-dice {
-  width: 48px;    
-  height: 48px;
+  width: 90px;    
+  height: 90px;
   animation: dice-spin 1.2s linear infinite;
 }
 
 .loading-text {
   margin-top: 12px;
-  font-size: 14px;
+  font-size: 20px;
   color: var(--color-text);
   letter-spacing: 0.5px;
 }
@@ -537,6 +537,75 @@ p, h1, h2, h3 {
     transform: rotate(360deg);
   }
 }
+
+.campaign-options {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.campaign-option-button {
+  position: relative;
+
+  background: var(--color-background);
+  border: none;
+  border-radius: 12px;
+
+  padding: 0.45rem 1.1rem;
+
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.campaign-option-button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.campaign-option-button:active {
+  transform: scale(1.04);
+}
+
+.campaign-option-button::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    270deg,
+    #60a5fa,
+    #22c55e,
+    #a855f7,
+    #60a5fa
+  );
+  background-size: 600% 600%;
+  padding: 2px;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.campaign-option-button:hover::before {
+  opacity: 1;
+  animation: gradientBorder 6s ease infinite;
+}
+
+
 
 
 

@@ -22,7 +22,10 @@ export const Navbar = () => {
   const location = useLocation()
   const currentPath = location.pathname
 
-  const { isLoadingCampaign } = useCoordinator();
+  // COORDINATOR
+  const { isLoadingCampaign } = useCoordinator()
+  const { isDungeonMaster } = useCoordinator()
+  const { setSelectedOption } = useCoordinator()
 
   useEffect(() => {
     // se define el manejador del evento de tocar fuera del menu (menu que aparece al tocar icono de usuario)
@@ -65,8 +68,39 @@ export const Navbar = () => {
         )}
 
         {/* Contenido para VIEW CAMPAIGN */}
-        {currentPath.startsWith('/view_campaign') && !isLoadingCampaign && (
-          <div className='welcome-text'>Enjoy your campaign</div>
+        {currentPath.startsWith('/view_campaign') && (
+          <div className="navbar-campaign-area">
+            {isLoadingCampaign ? (
+              <div className="welcome-text">Cargando...</div>
+            ) : (
+              <div className="campaign-options">
+
+                <button 
+                  className="campaign-option-button"
+                  onClick={() => setSelectedOption("view_players")}
+                >
+                  View Players
+                </button>
+
+                <button 
+                  className="campaign-option-button"
+                  onClick={() => setSelectedOption("view_compendium")}
+                >
+                  Compendium
+                </button>
+
+                {isDungeonMaster && (
+                  <button 
+                    className="campaign-option-button"
+                    onClick={() => setSelectedOption("add_location")}
+                  >
+                    Add Location +
+                  </button>
+                )}
+
+              </div>
+            )}
+          </div>
         )}
 
         {/* Contenido para ADMIN */}

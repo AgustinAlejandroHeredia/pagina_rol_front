@@ -10,6 +10,7 @@ import { CreateCampaign } from "./pages/CreateCampaign"
 import { AdminOptions } from "./pages/AdminOptions"
 import { MainLayout } from "./layouts/MainLayout"
 import { CoordinatorLayout } from "./layouts/CoordinatorLayout"
+import { CompendiumPage } from "./pages/Compendium"
 
 export function AppRouter() {
   return (
@@ -46,6 +47,10 @@ export function AppRouter() {
 
         <Route element={<CoordinatorLayout />}>
           <Route path="/view_campaign/:campaignId" element={<ViewCampaign />} />
+        </Route>
+
+        <Route element={<MainLayout />}>
+          <Route path="/view_compendium/:campaignId" element={<CompendiumPage/>}/>
         </Route>
 
       </Route>
