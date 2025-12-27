@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react'
+
 // HOOK
 import { useViewCampaign } from '../hooks/useViewCampaign'
 
 // NAVIGATION
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 // LOADING ICON
 import Loading from '../components/Loading'
@@ -12,7 +14,10 @@ import ViewCampaignError from "../components/ViewCampaignError"
 
 // COORDINATOR
 import { useCoordinator } from '../layouts/Coordinator'
-import { useEffect } from 'react'
+
+// SIDECARD
+import { SideCard } from '../components/SideCard'
+
 
 
 export function ViewCampaign() {
@@ -20,6 +25,13 @@ export function ViewCampaign() {
     const { campaignId } = useParams<{ campaignId: string }>()
 
     const { selectedOption, setSelectedOption } = useCoordinator()
+
+    // SIDECARD
+    const [isPanelOpen, setIsPanelOpen] = useState(false)
+    const openPanel = () => setIsPanelOpen(true)
+    const closePanel = () => setIsPanelOpen(false)
+
+    const hasOpenedRef = useRef(false)
 
     const { campaign, isAuthenticated, loading, error } = useViewCampaign(campaignId ?? '')
 
@@ -29,6 +41,8 @@ export function ViewCampaign() {
     }
 
     useEffect(() => {
+
+        // COMPENDIUM
         if(isAuthenticated && selectedOption === 'view_compendium' && campaignId) {
             window.open(
                 `/view_compendium/${campaignId}`,
@@ -37,7 +51,19 @@ export function ViewCampaign() {
             )
             setSelectedOption('')
         }
-    }, [selectedOption, campaignId, setSelectedOption])
+
+        // VIEW PLAYERS --> OVERLAY
+        if(isAuthenticated && selectedOption === 'view_players' && !hasOpenedRef.current) {
+            console.log("LLEGA A VIEW PLAYERS")
+            openPanel()
+            setSelectedOption('')
+        }
+
+        if (selectedOption === '') {
+            hasOpenedRef.current = false;
+        }
+
+    }, [selectedOption, campaignId, isAuthenticated, setSelectedOption])
 
     if(loading) return <Loading />
 
@@ -47,9 +73,15 @@ export function ViewCampaign() {
     }
     
     return (
-        <div className='content-containter'>
+        <div className='content-container'>
             
-            
+            <h1> GENERAL CONTENT </h1>
+
+            <SideCard isOpen={isPanelOpen} onClose={closePanel}>
+                <div> 
+                    GENERAL CONTENT 
+                </div>
+            </SideCard>
 
         </div>
     )
