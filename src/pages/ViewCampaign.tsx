@@ -29,11 +29,14 @@ export function ViewCampaign() {
     // SIDECARD
     const [isPanelOpen, setIsPanelOpen] = useState(false)
     const openPanel = () => setIsPanelOpen(true)
-    const closePanel = () => setIsPanelOpen(false)
+    const closePanel = () => {
+        setIsPanelOpen(false),
+        setSelectedOption('')
+    }
 
     const hasOpenedRef = useRef(false)
 
-    const { campaign, isAuthenticated, loading, error } = useViewCampaign(campaignId ?? '')
+    const { campaign, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId ?? '')
 
     if(!campaignId){
         console.log("No campaign id provided")
@@ -56,7 +59,6 @@ export function ViewCampaign() {
         if(isAuthenticated && selectedOption === 'view_players' && !hasOpenedRef.current) {
             console.log("LLEGA A VIEW PLAYERS")
             openPanel()
-            setSelectedOption('')
         }
 
         if (selectedOption === '') {
@@ -73,14 +75,27 @@ export function ViewCampaign() {
     }
     
     return (
-        <div className='content-container'>
+        <div>
             
-            <h1> GENERAL CONTENT </h1>
+            <h1> CAMPAIGN MAP </h1>
 
             <SideCard isOpen={isPanelOpen} onClose={closePanel}>
-                <div> 
-                    GENERAL CONTENT 
-                </div>
+                {isAuthenticated && selectedOption === 'view_players' && campaignId && (
+                    <div className="players-list">
+                        {view_users_data.length === 0 ? (
+                        <p>No hay usuarios</p>
+                        ) : (
+                        <ul>
+                            {view_users_data.map((player) => (
+                            <li key={player.alias}>
+                                <strong>{player.name}</strong> in the role of{' '}
+                                <em>{player.alias}</em>
+                            </li>
+                            ))}
+                        </ul>
+                        )}
+                    </div>
+                )}
             </SideCard>
 
         </div>
