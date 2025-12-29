@@ -22,6 +22,7 @@ export function CreateCampaign() {
 
     const [done, setDone] = useState(false)
     const [successful, setSuccessful] = useState(false)
+    
     const createCampaign = async () => {
         try{
 

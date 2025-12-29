@@ -1,4 +1,5 @@
 import { api } from "../api/api"
+import type { MapElem } from "../types/types"
 
 export const ViewCampaignService = {
 
@@ -16,5 +17,13 @@ export const ViewCampaignService = {
         const response = await api.get(`/campaigns/get_campaign_users/${campaignId}`)
         return response.data
     },
+
+    createMapLocation: async (campaignId: string, formData: MapElem) => {
+        const response = await api.post(
+            `/mapelem/${campaignId}`, 
+            formData
+        )
+        return response.data
+    }
 
 }

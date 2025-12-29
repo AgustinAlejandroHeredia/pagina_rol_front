@@ -3,12 +3,10 @@
 /* COLORES */
 :root {
   /* Colores base */
-  --color-background_old: #1a1e27;
-  --color-background2: #041762;
   --color-background: #020e3b;
 
-  --color-navbar_old: #32405f;
   --color-navbar: #7f62d9;
+  --color-navbar-plus: #967DDF;
 
   --color-border: #e5e7eb;
   --color-border_action: #60a5fa;
@@ -649,9 +647,60 @@ p, h1, h2, h3 {
   justify-content: flex-end;
 }
 
+.sidecard-bottom-content {
+  padding: 6px;
+  border-bottom: 1px solid var(--color-border);
+
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .sidecard-content {
   padding: 1rem;
   overflow-y: auto;
+}
+
+
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+
+  border-radius: 999px; /* redondo */
+  border: 2px solid var(--color-navbar);
+
+  background-color: transparent;
+  color: var(--color-navbar-plus);
+
+  outline: none;
+
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--color-navbar);
+  opacity: 0.8;
+}
+
+.input:focus {
+  border-color: var(--color-navbar-plus);
+  box-shadow: 0 0 0 2px color-mix(
+    in srgb,
+    var(--color-navbar-plus) 30%,
+    transparent
+  );
+}
+
+
+
+.text-area {
+  width: '100%';
+  height: '150px';
+  resize: 'none';
+  padding: '10px';
+  border-radius: '8px';
+  border: '1px solid #ccc';
 }
 
 

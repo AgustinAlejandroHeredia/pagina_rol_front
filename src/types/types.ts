@@ -10,11 +10,11 @@ export interface CampaignHome {
 }
 
 export interface MapElem {
-  title: string,
-  capa: number,
-  visible: boolean,
+  name: string,
+  description: string,
   type: string,
-  coords: string,
+  visible: boolean,
+  layer: number,
 }
 
 export interface PlayerCampaign {

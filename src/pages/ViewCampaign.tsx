@@ -17,6 +17,7 @@ import { useCoordinator } from '../layouts/Coordinator'
 
 // SIDECARD
 import { SideCard } from '../components/SideCard'
+import { AddLocationPanel } from '../components/AddLocation'
 
 
 
@@ -61,6 +62,12 @@ export function ViewCampaign() {
             openPanel()
         }
 
+        // ADD LOCATION
+        if(isAuthenticated && selectedOption === 'add_location' && !hasOpenedRef.current) {
+            console.log("LLEGA A ADD LOCATION")
+            openPanel()
+        }
+
         if (selectedOption === '') {
             hasOpenedRef.current = false;
         }
@@ -80,6 +87,7 @@ export function ViewCampaign() {
             <h1> CAMPAIGN MAP </h1>
 
             <SideCard isOpen={isPanelOpen} onClose={closePanel}>
+
                 {isAuthenticated && selectedOption === 'view_players' && campaignId && (
                     <div className="players-list">
                         {view_users_data.length === 0 ? (
@@ -96,6 +104,11 @@ export function ViewCampaign() {
                         )}
                     </div>
                 )}
+
+                {isAuthenticated && selectedOption === 'add_location' && campaignId && (
+                    <AddLocationPanel campaignId={campaignId}/>
+                )} 
+
             </SideCard>
 
         </div>
