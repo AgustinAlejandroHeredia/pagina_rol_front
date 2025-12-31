@@ -153,6 +153,13 @@ body {
   transform: translate(0, -50%);
 }
 
+.help-card-icon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 8px;
+}
+
 .user-avatar {
   width: 36px;
   height: 36px;

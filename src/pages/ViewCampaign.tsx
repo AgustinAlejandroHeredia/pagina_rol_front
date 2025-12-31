@@ -19,6 +19,7 @@ import { useCoordinator } from '../layouts/Coordinator'
 import { SideCard } from '../components/SideCard'
 import { AddLocationPanel } from '../components/AddLocation'
 import { EditCampaign } from '../components/EditCampaign'
+import { ViewPlayers } from '../components/ViewPlayers'
 
 
 
@@ -96,20 +97,7 @@ export function ViewCampaign() {
             <SideCard isOpen={isPanelOpen} onClose={closePanel}>
 
                 {isAuthenticated && selectedOption === 'view_players' && campaignId && (
-                    <div className="players-list">
-                        {view_users_data.length === 0 ? (
-                        <p>No hay usuarios</p>
-                        ) : (
-                        <ul>
-                            {view_users_data.map((player) => (
-                            <li key={player.alias}>
-                                <strong>{player.name}</strong> in the role of{' '}
-                                <em>{player.alias}</em>
-                            </li>
-                            ))}
-                        </ul>
-                        )}
-                    </div>
+                    <ViewPlayers players={view_users_data}/>
                 )}
 
                 {isAuthenticated && selectedOption === 'add_location' && campaignId && (

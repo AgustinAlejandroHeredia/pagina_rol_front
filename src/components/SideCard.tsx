@@ -1,4 +1,4 @@
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { RiCloseCircleLine } from "react-icons/ri";
 
 type SideCardProps = {
   isOpen: boolean
@@ -13,8 +13,8 @@ export const SideCard = ({ isOpen, onClose, children }: SideCardProps) => {
     <aside className="sidecard">
       <div className="sidecard-inner">
         <div className="sidecard-header">
-          <div onClick={onClose}>
-            <IoIosCloseCircleOutline size={26} />
+          <div onClick={onClose} style={{ cursor: 'pointer' }}>
+            <RiCloseCircleLine size={26} />
           </div>
         </div>
 

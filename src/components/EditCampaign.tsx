@@ -108,8 +108,6 @@ export const EditCampaign = ({
 
     return (
 
-        <div>
-
         <div className="add-location-panel">
 
             <h4 className="page-message">Editing campaign</h4>
@@ -290,7 +288,7 @@ export const EditCampaign = ({
                 {!eliminationOptions && (
                     <div className="eliminate-campaign-container">
                         <div className="eliminate-campaign-button" onClick={setEliminationOptionsOn}>
-                            Eliminate
+                            Delete campaign
                         </div>
                     </div>
                 )}
@@ -298,7 +296,7 @@ export const EditCampaign = ({
                 {eliminationOptions && (
                     <div className="eliminate-campaign-container">
                         <h4 className="eliminate-campaign-message">
-                            You are about to eliminate this campaign, do you want to procede? There is no come back
+                            You are about to delete this campaign, do you want to procede? There is no come back
                         </h4>
 
                         <div className="cancel-eliminate-campaign-button" onClick={setEliminationOptionsOff}>
@@ -306,7 +304,7 @@ export const EditCampaign = ({
                         </div>
 
                         <div className="eliminate-campaign-button" onClick={deleteCampaign}>
-                            Yes, eliminate campaign
+                            Yes, delete campaign
                         </div>
 
                     </div>
@@ -314,8 +312,6 @@ export const EditCampaign = ({
 
             </Stack>
 
-        </div>
-        
         </div>
 
     )

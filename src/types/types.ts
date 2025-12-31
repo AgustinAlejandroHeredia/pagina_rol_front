@@ -38,3 +38,8 @@ export interface UpdateCampaign {
   description: string,
   system: string,
 }
+
+export interface ViewPlayerType {
+  name: string,
+  alias: string,
+}
