@@ -1,10 +1,20 @@
 import { api } from "../api/api"
-import type { MapElem } from "../types/types"
+import type { MapElem, UpdateCampaign } from "../types/types"
 
 export const ViewCampaignService = {
 
     getCampaign: async (campaignId: string) => {
         const response = await api.get(`/campaigns/${campaignId}`)
+        return response.data
+    },
+
+    updateCampaign: async (campaignId: string, updateData: UpdateCampaign) => {
+        const response = await api.patch(`/campaigns/${campaignId}`, updateData)
+        return response.data
+    },
+
+    deleteCampaign: async (campaignId: string) => {
+        const response = await api.delete(`/campaigns/${campaignId}`)
         return response.data
     },
 

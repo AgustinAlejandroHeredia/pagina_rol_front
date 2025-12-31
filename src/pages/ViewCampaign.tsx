@@ -18,6 +18,7 @@ import { useCoordinator } from '../layouts/Coordinator'
 // SIDECARD
 import { SideCard } from '../components/SideCard'
 import { AddLocationPanel } from '../components/AddLocation'
+import { EditCampaign } from '../components/EditCampaign'
 
 
 
@@ -68,6 +69,12 @@ export function ViewCampaign() {
             openPanel()
         }
 
+        // EDIT CAMPAIGN
+        if(isAuthenticated && selectedOption === 'edit_campaign' && !hasOpenedRef.current) {
+            console.log("LLEGA A EDIT CAMPAIGN")
+            openPanel()
+        }
+
         if (selectedOption === '') {
             hasOpenedRef.current = false;
         }
@@ -107,6 +114,10 @@ export function ViewCampaign() {
 
                 {isAuthenticated && selectedOption === 'add_location' && campaignId && (
                     <AddLocationPanel campaignId={campaignId}/>
+                )}
+
+                {isAuthenticated && selectedOption === 'edit_campaign' && campaignId && (
+                    <EditCampaign campaignId={campaignId} campaignName={campaign!.name} campaignDescription={campaign!.description} campaignSystem={campaign!.system}/>
                 )} 
 
             </SideCard>

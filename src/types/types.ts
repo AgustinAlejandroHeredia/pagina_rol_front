@@ -32,3 +32,9 @@ export interface Campaign {
   users: PlayerCampaign[],
   mapElems: MapElem[],
 }
+
+export interface UpdateCampaign {
+  name: string,
+  description: string,
+  system: string,
+}

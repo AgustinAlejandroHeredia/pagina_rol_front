@@ -11,6 +11,7 @@ type AddLocationPanelProps = {
 
 export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelProps) => {
 
+    // Messages
     const [showMessageOfEmpty, setShowMessageOfEmpty] = useState(false)
     const [done, setDone] = useState(false)
     const [error, setError] = useState(false)
@@ -98,34 +99,35 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
                     placeholder="Name"
                     variant="outlined"
                     sx={{
-                    '& .MuiInputLabel-root': {
+                        '& .MuiInputLabel-root': {
                         color: 'var(--color-text)',
-                    },
-                    '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+                        },
+                        '& .MuiInputLabel-root.MuiInputLabel-shrink': {
                         color: 'var(--color-navbar-plus)',
-                    },
-                    '& .MuiInputLabel-root.Mui-focused': {
+                        },
+                        '& .MuiInputLabel-root.Mui-focused': {
                         color: 'var(--color-navbar-plus)',
-                    },
-                    '& .MuiOutlinedInput-root': {
-                        color: 'var(--color-text)',
+                        },
+                        '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                        borderColor: 'var(--color-navbar)',
+                            borderColor: 'var(--color-navbar)',
                         },
                         '&:hover fieldset': {
-                        borderColor: 'var(--color-navbar-plus)',
+                            borderColor: 'var(--color-navbar-plus)',
                         },
                         '&.Mui-focused fieldset': {
-                        borderColor: 'var(--color-navbar-plus)',
+                            borderColor: 'var(--color-navbar-plus)',
                         },
-                    },
-                    '& input': {
-                        color: 'var(--color-navbar-plus)',
-                    },
-                    '& input::placeholder': {
+                        },
+                        // Texto que escribe el usuario
+                        '& .MuiOutlinedInput-input': {
+                        color: 'var(--color-text)',
+                        },
+                        // Placeholder
+                        '& .MuiOutlinedInput-input::placeholder': {
                         color: 'var(--color-navbar)',
                         opacity: 0.8,
-                    },
+                        },
                     }}
                 />
 
@@ -141,34 +143,35 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
                     placeholder="Description"
                     variant="outlined"
                     sx={{
-                    '& .MuiInputLabel-root': {
+                        '& .MuiInputLabel-root': {
                         color: 'var(--color-text)',
-                    },
-                    '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+                        },
+                        '& .MuiInputLabel-root.MuiInputLabel-shrink': {
                         color: 'var(--color-navbar-plus)',
-                    },
-                    '& .MuiInputLabel-root.Mui-focused': {
+                        },
+                        '& .MuiInputLabel-root.Mui-focused': {
                         color: 'var(--color-navbar-plus)',
-                    },
-                    '& .MuiOutlinedInput-root': {
-                        color: 'var(--color-text)',
+                        },
+                        '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                        borderColor: 'var(--color-navbar)',
+                            borderColor: 'var(--color-navbar)',
                         },
                         '&:hover fieldset': {
-                        borderColor: 'var(--color-navbar-plus)',
+                            borderColor: 'var(--color-navbar-plus)',
                         },
                         '&.Mui-focused fieldset': {
-                        borderColor: 'var(--color-navbar-plus)',
+                            borderColor: 'var(--color-navbar-plus)',
                         },
-                    },
-                    '& input': {
-                        color: 'var(--color-navbar-plus)',
-                    },
-                    '& input::placeholder': {
+                        },
+                        // Texto que escribe el usuario
+                        '& .MuiOutlinedInput-input': {
+                        color: 'var(--color-text)',
+                        },
+                        // Placeholder
+                        '& .MuiOutlinedInput-input::placeholder': {
                         color: 'var(--color-navbar)',
                         opacity: 0.8,
-                    },
+                        },
                     }}
                 />
 
@@ -199,6 +202,10 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
                         ? 'var(--color-navbar-plus)'
                         : 'var(--color-navbar)',
 
+                        '& .MuiSelect-select': {
+                            color: 'var(--color-text)',
+                        },
+
                         '& .MuiSelect-icon': {
                         color: formData.type
                             ? 'var(--color-navbar-plus)'
@@ -219,6 +226,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
                         borderColor: 'var(--color-navbar-plus)',
                         borderWidth: '2px',
                         },
+                        
                     }}
                     >
                     <MenuItem value="capital">Capital</MenuItem>
@@ -271,34 +279,35 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
                         step: 1,
                     }}
                     sx={{
-                    '& .MuiInputLabel-root': {
+                        '& .MuiInputLabel-root': {
                         color: 'var(--color-text)',
-                    },
-                    '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+                        },
+                        '& .MuiInputLabel-root.MuiInputLabel-shrink': {
                         color: 'var(--color-navbar-plus)',
-                    },
-                    '& .MuiInputLabel-root.Mui-focused': {
+                        },
+                        '& .MuiInputLabel-root.Mui-focused': {
                         color: 'var(--color-navbar-plus)',
-                    },
-                    '& .MuiOutlinedInput-root': {
-                        color: 'var(--color-text)',
+                        },
+                        '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                        borderColor: 'var(--color-navbar)',
+                            borderColor: 'var(--color-navbar)',
                         },
                         '&:hover fieldset': {
-                        borderColor: 'var(--color-navbar-plus)',
+                            borderColor: 'var(--color-navbar-plus)',
                         },
                         '&.Mui-focused fieldset': {
-                        borderColor: 'var(--color-navbar-plus)',
+                            borderColor: 'var(--color-navbar-plus)',
                         },
-                    },
-                    '& input': {
-                        color: 'var(--color-navbar-plus)',
-                    },
-                    '& input::placeholder': {
+                        },
+                        // Texto que escribe el usuario
+                        '& .MuiOutlinedInput-input': {
+                        color: 'var(--color-text)',
+                        },
+                        // Placeholder
+                        '& .MuiOutlinedInput-input::placeholder': {
                         color: 'var(--color-navbar)',
                         opacity: 0.8,
-                    },
+                        },
                     }}
                 />
 

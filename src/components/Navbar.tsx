@@ -98,6 +98,15 @@ export const Navbar = () => {
                   </button>
                 )}
 
+                {isDungeonMaster && (
+                  <button 
+                    className="campaign-option-button"
+                    onClick={() => setSelectedOption("edit_campaign")}
+                  >
+                    Edit
+                  </button>
+                )}
+
               </div>
             )}
           </div>
