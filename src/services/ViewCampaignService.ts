@@ -1,7 +1,13 @@
 import { api } from "../api/api"
 import type { MapElem, UpdateCampaign } from "../types/types"
 
+type InvitePayload = {
+    campaign_id: string
+    email: string
+}
+
 export const ViewCampaignService = {
+
 
     getCampaign: async (campaignId: string) => {
         const response = await api.get(`/campaigns/${campaignId}`)
@@ -32,6 +38,18 @@ export const ViewCampaignService = {
         const response = await api.post(
             `/mapelem/${campaignId}`, 
             formData
+        )
+        return response.data
+    },
+
+    createInvitation: async (campaignId: string, email: string) => {
+        const inviteData: InvitePayload = {
+            campaign_id: campaignId,
+            email: email,
+        }
+        const response = await api.post(
+            '/invite/',
+            inviteData,
         )
         return response.data
     }

@@ -9,13 +9,16 @@ import type { ViewPlayerType } from "../types/types"
 //Icons
 import { IoMdHelpCircle } from "react-icons/io";
 import { IoIosCloseCircle } from "react-icons/io";
+import { ViewCampaignService } from "../services/ViewCampaignService";
 
 type ViewPlayersPanelProps = {
+    campaign_id: string
     players: ViewPlayerType[]
     onSuccess?: () => void
 }
 
 export const ViewPlayers = ({
+    campaign_id,
     players,
     onSuccess
 } : ViewPlayersPanelProps) => {
@@ -31,13 +34,47 @@ export const ViewPlayers = ({
     }
 
     const [email, setEmail] = useState<string>('')
+    const [completeEmail, setCompleteEmail] = useState(false)
+    const [invalidEmail, setInvalidEmail] = useState(false)
+    const [error, setError] = useState(false)
+    const [success, setSuccess] = useState(false)
+
+    const emailRegex =/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     }
 
-    const sendInvite = () => {
-        console.log("SENDING INVITATION NOT IMPLEMENTED YER")
+    const sendInvite = async () => {
+
+        // reset
+        setCompleteEmail(false)
+        setInvalidEmail(false)
+        setError(false)
+        setSuccess(false)
+
+        if(!email.trim()){
+            setCompleteEmail(true)
+            return
+        }
+
+        if (email.length > 254) {
+            setCompleteEmail(true)
+            return
+        }
+
+        if (!emailRegex.test(email)) {
+            setInvalidEmail(true)
+            return
+        }
+
+        try {
+            const response = await ViewCampaignService.createInvitation(campaign_id, email)
+            console.log(response)
+            setSuccess(true)
+        } catch (error) {
+            setError(true)
+        }
     }
 
     return (
@@ -143,6 +180,30 @@ export const ViewPlayers = ({
                     }}
                 />
             </div>
+
+            {completeEmail && (
+                <div className="create-campaign-message-unsuccessful">
+                    You must complete the email for the invite to be sent.
+                </div>
+            )}
+
+            {invalidEmail && (
+                <div className="create-campaign-message-unsuccessful">
+                    Fortmat incorrect. Do not use special characters except for @ y .
+                </div>
+            )}
+
+            {error && (
+                <div className="create-campaign-message-unsuccessful">
+                    Something went wrong. Check if the email of that user you want to invite is right.
+                </div>
+            )}
+
+            {success && (
+                <div className="create-campaign-message-successful">
+                    Invite sent successfuly
+                </div>
+            )}
 
             <div className="create-campaign-button" onClick={sendInvite}>
                 Send invite

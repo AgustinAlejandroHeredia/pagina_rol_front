@@ -18,6 +18,7 @@ export function useHome() {
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
     const { isAuthenticated } = useAuth0()
+    
     const authBridge = useAuth0Bridge()
 
     useEffect(() => {

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useViewCampaign } from '../hooks/useViewCampaign'
 
 // NAVIGATION
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 // LOADING ICON
 import Loading from '../components/Loading'
@@ -25,7 +25,14 @@ import { ViewPlayers } from '../components/ViewPlayers'
 
 export function ViewCampaign() {
 
+    const navigate = useNavigate()
+
     const { campaignId } = useParams<{ campaignId: string }>()
+
+    if(campaignId === undefined){
+        console.log("No campaign id provided")
+        return <ViewCampaignError/>
+    }
 
     const { selectedOption, setSelectedOption } = useCoordinator()
 
@@ -39,12 +46,7 @@ export function ViewCampaign() {
 
     const hasOpenedRef = useRef(false)
 
-    const { campaign, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId ?? '')
-
-    if(!campaignId){
-        console.log("No campaign id provided")
-        return <ViewCampaignError/>
-    }
+    const { campaign, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId)
 
     useEffect(() => {
 
@@ -97,7 +99,7 @@ export function ViewCampaign() {
             <SideCard isOpen={isPanelOpen} onClose={closePanel}>
 
                 {isAuthenticated && selectedOption === 'view_players' && campaignId && (
-                    <ViewPlayers players={view_users_data}/>
+                    <ViewPlayers campaign_id={campaignId} players={view_users_data}/>
                 )}
 
                 {isAuthenticated && selectedOption === 'add_location' && campaignId && (

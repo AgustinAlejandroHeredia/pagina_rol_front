@@ -1,0 +1,104 @@
+import { useState, useEffect } from "react"
+import { CompendiumService } from "../services/CompendiumService"
+
+// AUTH0
+import { useAuth0 } from "@auth0/auth0-react"
+import { useAuth0Bridge } from "../auth/auth0-bridge"
+
+export function useCompendium (campaign_id: string){
+
+    type FileItem = {
+        name: string
+        fileId: string
+    }
+
+    type GroupedFiles = {
+        root: FileItem[]
+        folders: Record<string, FileItem[]>
+    }
+
+    const [error, setError] = useState<string | null>(null)
+
+    const [compendium, setCompendium] = useState<GroupedFiles>({
+        root: [],
+        folders: {},
+    })
+
+    const [loading, setLoading] = useState(true)
+
+    const [isAdmin, setIsAdmin] = useState<boolean>(false)
+
+    const { isAuthenticated } = useAuth0()
+    
+    const authBridge = useAuth0Bridge()
+
+
+
+    // ORDER FILES FUNCTION
+    const groupFiles = (files: FileItem[]): GroupedFiles => {
+
+        const result: GroupedFiles = {
+            root: [],
+            folders: {},
+        }
+
+        files.forEach(file => {
+
+            // if is NOT inside a folder
+            if(!file.name.includes('/')){
+                result.root.push(file)
+                return
+            }
+
+            const [folder, filename] = file.name.split('/', 2)
+
+            // if folder doesnt exist on result, creates it
+            if(!result.folders[folder]){
+                result.folders[folder] = []
+            }
+
+            // sends the file to the forlder it belongs to
+            result.folders[folder].push({
+                name: filename,
+                fileId: file.fileId,
+            })
+
+        })
+        
+        return result
+    }
+
+
+
+    useEffect(() => {
+        const loadCompendium = async () => {
+            try {
+
+                setLoading(true)
+
+                const perms = await authBridge.getPermissions()
+                if(perms.includes("admin:page")){
+                    setIsAdmin(true)
+                }
+
+                const compendiumData = await CompendiumService.getCompendiumFiles(campaign_id)
+
+                // ORDERS COMPENDIUM INFORMATION
+                const processedCompendiumData = groupFiles(compendiumData)
+
+                // SavesIt
+                setCompendium(processedCompendiumData)
+
+            } catch (error: any) {
+                console.error("Error en useCompendium: ", error)
+                setError(error.message || "Error desconocido")
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        loadCompendium()
+    }, [isAuthenticated])
+
+    return { compendium, isAuthenticated, isAdmin, loading, error }
+}

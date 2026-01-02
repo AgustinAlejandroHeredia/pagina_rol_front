@@ -112,6 +112,11 @@ export const Navbar = () => {
           </div>
         )}
 
+        {/* Contenido para VIEW COMPENDIUM */}
+        {currentPath.startsWith('/view_compendium') && (
+          <div className='welcome-text'>Compendium</div>
+        )}
+
         {/* Contenido para ADMIN */}
         {currentPath === '/admin_options' && (
           <div className='welcome-text'>Welcome admin, time to play god</div>
