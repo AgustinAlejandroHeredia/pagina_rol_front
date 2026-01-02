@@ -117,6 +117,11 @@ export const Navbar = () => {
           <div className='welcome-text'>Compendium</div>
         )}
 
+        {/* Contenido para JOIN CAMPAIGN */}
+        {currentPath.startsWith('/join_campaign') && (
+          <div className='welcome-text'>Joining campaign...</div>
+        )}
+
         {/* Contenido para ADMIN */}
         {currentPath === '/admin_options' && (
           <div className='welcome-text'>Welcome admin, time to play god</div>

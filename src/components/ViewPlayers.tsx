@@ -38,6 +38,7 @@ export const ViewPlayers = ({
     const [invalidEmail, setInvalidEmail] = useState(false)
     const [error, setError] = useState(false)
     const [success, setSuccess] = useState(false)
+    const [exists, setExists] = useState(false)
 
     const emailRegex =/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -52,6 +53,7 @@ export const ViewPlayers = ({
         setInvalidEmail(false)
         setError(false)
         setSuccess(false)
+        setExists(false)
 
         if(!email.trim()){
             setCompleteEmail(true)
@@ -70,8 +72,15 @@ export const ViewPlayers = ({
 
         try {
             const response = await ViewCampaignService.createInvitation(campaign_id, email)
-            console.log(response)
-            setSuccess(true)
+            if(response.success){
+                setSuccess(true)
+            }else{
+                if(response.message === 'Invitation already exists'){
+                    setExists(true)
+                }else{
+                    setError(true)
+                }
+            }
         } catch (error) {
             setError(true)
         }
@@ -130,7 +139,7 @@ export const ViewPlayers = ({
                     </div>
 
                     <div>
-                        <h4 className="page-message">Here u can write down the player's email to send them an invitation that is valid for 24 hours. The'll have to go "Home", "Join new campaign" and enter the code there, and the'll be added automatically to your campaign.</h4>
+                        <h4 className="page-message">Here u can write down the player's email to send them an invitation that is valid for 12 hours. The'll have to go "Home", "Join new campaign" and enter the code there, and the'll be added automatically to your campaign.</h4>
                     </div>
 
                 </div>
@@ -196,6 +205,12 @@ export const ViewPlayers = ({
             {error && (
                 <div className="create-campaign-message-unsuccessful">
                     Something went wrong. Check if the email of that user you want to invite is right.
+                </div>
+            )}
+
+            {exists && (
+                <div className="create-campaign-message-unsuccessful">
+                    An invitation for this player alredy exists.
                 </div>
             )}
 
