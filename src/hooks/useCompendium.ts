@@ -17,6 +17,8 @@ export function useCompendium (campaign_id: string){
         folders: Record<string, FileItem[]>
     }
 
+    const [reloadTrigger, setReloadTrigger] = useState(0)
+
     const [error, setError] = useState<string | null>(null)
 
     const [compendium, setCompendium] = useState<GroupedFiles>({
@@ -33,6 +35,8 @@ export function useCompendium (campaign_id: string){
     const authBridge = useAuth0Bridge()
 
 
+
+    const resetContent = () => setReloadTrigger(prev => prev +1)
 
     // ORDER FILES FUNCTION
     const groupFiles = (files: FileItem[]): GroupedFiles => {
@@ -75,6 +79,7 @@ export function useCompendium (campaign_id: string){
             try {
 
                 setLoading(true)
+                setError(null)
 
                 const perms = await authBridge.getPermissions()
                 if(perms.includes("admin:page")){
@@ -98,7 +103,7 @@ export function useCompendium (campaign_id: string){
         }
 
         loadCompendium()
-    }, [isAuthenticated])
+    }, [isAuthenticated, reloadTrigger])
 
-    return { compendium, isAuthenticated, isAdmin, loading, error }
+    return { compendium, isAuthenticated, isAdmin, loading, error, resetContent }
 }

@@ -6,6 +6,11 @@ export const CompendiumService = {
         const response = await api.get(`/backblaze/compendium/${campaignId}`)
         //console.log("COMPENDIUM CONTENT : ",response.data)
         return response.data
-    }
+    },
+
+    uploadFiles: async (campaignId: string, formData: FormData) => {
+        const response = await api.post(`/backblaze/uploadFile/${campaignId}`, formData)
+        return response.data
+    },
     
 }
