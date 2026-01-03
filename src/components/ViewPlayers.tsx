@@ -40,6 +40,8 @@ export const ViewPlayers = ({
     const [success, setSuccess] = useState(false)
     const [exists, setExists] = useState(false)
 
+    const [loading, setLoading] = useState(false)
+
     const emailRegex =/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +73,7 @@ export const ViewPlayers = ({
         }
 
         try {
+            setLoading(true)
             const response = await ViewCampaignService.createInvitation(campaign_id, email)
             if(response.success){
                 setSuccess(true)
@@ -83,6 +86,8 @@ export const ViewPlayers = ({
             }
         } catch (error) {
             setError(true)
+        }finally{
+            setLoading(false)
         }
     }
 
@@ -220,8 +225,9 @@ export const ViewPlayers = ({
                 </div>
             )}
 
-            <div className="create-campaign-button" onClick={sendInvite}>
-                Send invite
+            <div className={`create-campaign-button ${loading ? 'disabled' : ''}`} onClick={sendInvite}>
+                {loading && <span className="spinner"></span>}
+                {loading ? ' Sending...' : 'Send invite'}
             </div>
 
             </Stack>

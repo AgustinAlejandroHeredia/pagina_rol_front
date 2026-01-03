@@ -40,6 +40,10 @@ export const EditCampaign = ({
 
     // Activate elimination
     const [eliminationOptions, setEliminationOptions] = useState(false)
+    const [showMainDeleteOption, setShowMainDeleteOption] = useState(true)
+
+    const [loading, setLoading] = useState(false)
+    const [loadingDelete, setLoadingDelete] = useState(false)
 
     const setEliminationOptionsOn = () => {
         setEliminationOptions(true)
@@ -76,6 +80,8 @@ export const EditCampaign = ({
             return
         }
 
+        setLoading(true)
+
         try {
             const updateData: UpdateCampaign = {
                 name: formData.name,
@@ -88,13 +94,17 @@ export const EditCampaign = ({
         } catch (error) {
             console.log('Error editing campaign : ', error)
             setErrorUpdate(true)
+        }finally{
+            setLoading(false)
         }
     }
 
-    const deleteCampaign = () => {
+    const deleteCampaign = async () => {
         try {
-            setEliminationOptionsOff
-            ViewCampaignService.deleteCampaign(campaignId)
+            setLoadingDelete(true)
+            setShowMainDeleteOption(false)
+            setEliminationOptionsOff()
+            await ViewCampaignService.deleteCampaign(campaignId)
             setDoneEliminate(true)
             onSuccess?.()
             setTimeout(() => {
@@ -103,6 +113,8 @@ export const EditCampaign = ({
         } catch (error) {
             console.log('Error eliminating campaign : ', error)
             setErrorEliminate(true)
+        }finally{
+            setLoadingDelete(false)
         }
     }
 
@@ -257,8 +269,9 @@ export const EditCampaign = ({
                     </div>
                 )}
 
-                <div className="create-campaign-button" onClick={changeCampaignName}>
-                    Save
+                <div className={`create-campaign-button ${loading ? 'disabled' : ''}`} onClick={changeCampaignName}>
+                    {loading && <span className="spinner"></span>}
+                    {loading ? ' Saving...' : 'Save changes'}
                 </div>
 
 
@@ -285,7 +298,7 @@ export const EditCampaign = ({
                     </div>
                 )}
 
-                {!eliminationOptions && (
+                {!eliminationOptions && showMainDeleteOption && (
                     <div className="eliminate-campaign-container">
                         <div className="eliminate-campaign-button" onClick={setEliminationOptionsOn}>
                             Delete campaign
@@ -307,6 +320,13 @@ export const EditCampaign = ({
                             Yes, delete campaign
                         </div>
 
+                    </div>
+                )}
+
+                {loadingDelete && (
+                    <div className={`eliminate-campaign-button ${loadingDelete ? 'disabled' : ''}`}>
+                        {loadingDelete && <span className="spinner"></span>}
+                        {loadingDelete ? ' Deleting campaign...' : ''}
                     </div>
                 )}
 

@@ -22,8 +22,14 @@ export function CreateCampaign() {
 
     const [done, setDone] = useState(false)
     const [successful, setSuccessful] = useState(false)
+
+    // Para el boton
+    const [loading, setLoading] = useState(false)
     
     const createCampaign = async () => {
+
+        setLoading(true)
+
         try{
 
             if(!formData.name.trim() || !formData.description.trim() || !formData.system.trim()){
@@ -53,6 +59,8 @@ export function CreateCampaign() {
             setShowError(false)
             setSuccessful(false)
             setDone(true)
+        }finally {
+            setLoading(false)
         }
     }
 
@@ -113,8 +121,9 @@ export function CreateCampaign() {
                         </div>
                     )}
 
-                    <div className="create-campaign-button" onClick={createCampaign}>
-                        Create +
+                    <div className={`create-campaign-button ${loading ? 'disabled' : ''}`} onClick={createCampaign}>
+                        {loading && <span className="spinner"></span>}
+                        {loading ? ' Creating...' : 'Create +'}
                     </div>
 
                 </div>
