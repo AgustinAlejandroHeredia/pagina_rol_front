@@ -13,4 +13,9 @@ export const CompendiumService = {
         return response.data
     },
     
+    deleteFile: async (fileId: string) => {
+        const response = await api.delete(`/backblaze/deleteFile/${fileId}`)
+        return response.data
+    },
+
 }

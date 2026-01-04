@@ -113,7 +113,7 @@ export function JoinCampaign() {
                         <input
                             type="text"
                             name="alias"
-                            placeholder="Example : Name"
+                            placeholder="Example : Kael Draven"
                             value={formData.alias}
                             onChange={handleChange}
                         />

@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useCompendium } from "../hooks/useCompendium";
 import ViewCampaignError from "../components/ViewCampaignError";
 import Loading from "../components/Loading";
+import { ConfirmModal } from "../components/ConfirmModal";
 
 // NAVIGATION
 import { useNavigate, useParams } from "react-router-dom";
@@ -26,6 +27,17 @@ export function CompendiumPage() {
     const [openFolders, setOpenFolders] = useState<Record<string, boolean>>({})
 
     // FILES
+
+    type FileToDelete = {
+        id: string
+        name: string
+    }
+
+    const [showConfirm, setShowConfirm] = useState(false)
+    const [fileToDelete, setFileToDelete] = useState<FileToDelete | null>(null)
+    const [deletingFile, setDeletingFile] = useState(false)
+    const [deletingFileError, setDeletingFileError] = useState(false)
+
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [selectedFiles, setSelectedFiles] = useState<File[] | null>(null)
     const [targetFoler, setTargetFolder] = useState<string>('root')
@@ -52,8 +64,25 @@ export function CompendiumPage() {
         console.log("SE SELECCIONA LA ID ", fileId)
     }
 
-    const handleDeleteFile = (fileId: string) => {
-        console.log("Eliminar archivo con ID:", fileId)
+    const handleConfirmDeleteFile = (fileName: string, fileId: string) => {
+        setFileToDelete({ id: fileId, name: fileName })
+        setShowConfirm(true)
+    }
+
+    const handleDeleteFile = async () => {
+        if(!fileToDelete) return
+
+        setDeletingFile(true)
+        try {
+            await CompendiumService.deleteFile(fileToDelete.id)
+            resetContent()
+        } catch (error) {
+            setDeletingFileError(true)
+        } finally {
+            setDeletingFile(false)
+            setShowConfirm(false)
+            setFileToDelete(null)
+        }
     }
 
     // opens file dialog
@@ -86,6 +115,11 @@ export function CompendiumPage() {
 
             } catch (error) {
                 setUploadError(true)
+                // takes user to the top of the screen
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                })
             } finally {
                 setUploadingFile(false)
                 setSelectedFiles(null)
@@ -108,6 +142,24 @@ export function CompendiumPage() {
                 </div>
                 )}
 
+            {succesfulUpload && (
+                <div className="create-campaign-message-successful">
+                    File/s upload successfully
+                </div>
+            )}
+
+            {uploadError && (
+                <div className="create-campaign-message-unsuccessful">
+                    An error has ocurred during the upload of the file/s. Please try again and check if you sent only allowed files ( png, jpeg, jpg, txt, pdf, docx and excel )
+                </div>
+            )}
+
+            {deletingFileError && (
+                <div className="create-campaign-message-unsuccessful">
+                    An error has ocurred deleting the file. Please try again later.
+                </div>
+            )}
+
             {/* ROOT FILES */}
             {compendium.root.length > 0 && (
                 <div className="compendium-card">
@@ -118,17 +170,17 @@ export function CompendiumPage() {
                     </span>
                     <MdDeleteOutline
                         style={{ cursor: "pointer", marginLeft: "8px" }}
-                        onClick={() => handleDeleteFile(file.fileId)}
+                        onClick={() => handleConfirmDeleteFile(file.name, file.fileId)}
                     />
                     </div>
                 ))}
 
                 <div
-                    className={`create-campaign-button ${loading ? 'disabled' : ''}`}
+                    className={`create-campaign-button ${uploadingFile ? 'disabled' : ''}`}
                     onClick={() => handleUploadFile(undefined)}
                 >
-                    {loading && <span className="spinner"></span>}
-                    {loading ? ' Uploading...' : 'Upload File'}
+                    {uploadingFile && <span className="spinner"></span>}
+                    {uploadingFile ? ' Uploading...' : 'Upload File'}
                 </div>
                 </div>
             )}
@@ -160,7 +212,7 @@ export function CompendiumPage() {
                             </span>
                             <MdDeleteOutline
                             style={{ cursor: "pointer", marginLeft: "8px" }}
-                            onClick={() => handleDeleteFile(file.fileId)}
+                            onClick={() => handleConfirmDeleteFile(file.name, file.fileId)}
                             />
                         </div>
                         ))}
@@ -169,11 +221,11 @@ export function CompendiumPage() {
 
                     {/* Upload button para carpeta */}
                     <div
-                        className={`create-campaign-button ${loading ? 'disabled' : ''}`}
+                        className={`create-campaign-button ${uploadingFile ? 'disabled' : ''}`}
                         onClick={() => handleUploadFile(folderName)}
                     >
-                        {loading && <span className="spinner"></span>}
-                        {loading ? ' Uploading...' : 'Upload File'}
+                        {uploadingFile && <span className="spinner"></span>}
+                        {uploadingFile ? ' Uploading...' : 'Upload File'}
                     </div>
                 </div>
                 );
@@ -186,6 +238,25 @@ export function CompendiumPage() {
                 onChange={handleFileChange}
                 style={{ display: "none" }}
                 multiple
+            />
+
+            {/* MODAL */}
+            <ConfirmModal
+                isOpen={showConfirm}
+                title="Delete file"
+                message={
+                    fileToDelete
+                    ? `Do you want to delete the file "${fileToDelete.name}"?`
+                    : ""
+                }
+                confirmText="Yes, delete the file"
+                cancelText="Cancel, keep file"
+                loading={deletingFile}
+                onConfirm={handleDeleteFile}
+                onCancel={() => {
+                    setShowConfirm(false)
+                    setFileToDelete(null)
+                }}
             />
 
         </div>
