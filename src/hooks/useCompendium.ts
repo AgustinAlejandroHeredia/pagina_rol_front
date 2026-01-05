@@ -48,27 +48,31 @@ export function useCompendium (campaign_id: string){
 
         files.forEach(file => {
 
-            // if is NOT inside a folder
-            if(!file.name.includes('/')){
+            // ───────── ROOT FILE ─────────
+            if (!file.name.includes('/')) {
                 result.root.push(file)
                 return
             }
 
             const [folder, filename] = file.name.split('/', 2)
 
-            // if folder doesnt exist on result, creates it
-            if(!result.folders[folder]){
+            // aseguramos carpeta
+            if (!result.folders[folder]) {
                 result.folders[folder] = []
             }
 
-            // sends the file to the forlder it belongs to
+            // ───────── .keep → solo estructura ─────────
+            if (filename === '.keep' || filename === '.bzEmpty') {
+            return
+            }
+
+            // ───────── archivo real ─────────
             result.folders[folder].push({
                 name: filename,
-                fileId: file.fileId,
+                fileId: file.fileId!,
             })
-
         })
-        
+
         return result
     }
 

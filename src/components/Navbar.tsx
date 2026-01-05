@@ -122,6 +122,21 @@ export const Navbar = () => {
           <div className='welcome-text'>Joining campaign...</div>
         )}
 
+        {/* VIEW IMAGES */}
+        {currentPath.startsWith('/view/images') && (
+          <div className='welcome-text'>Viewing Image</div>
+        )}
+
+        {/* VIEW TEXT */}
+        {currentPath.startsWith('/view/text') && (
+          <div className='welcome-text'>Viewing Text</div>
+        )}
+
+        {/* VIEW PDF */}
+        {currentPath.startsWith('/view/pdf') && (
+          <div className='welcome-text'>Viewing PDF</div>
+        )}
+
         {/* Contenido para ADMIN */}
         {currentPath === '/admin_options' && (
           <div className='welcome-text'>Welcome admin, time to play god</div>

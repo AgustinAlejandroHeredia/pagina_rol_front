@@ -18,4 +18,17 @@ export const CompendiumService = {
         return response.data
     },
 
+    createFolder: async (campaignId: string, folderName: string) => {
+        const response = await api.post("/backblaze/createFolder", {
+            campaignId,
+            folderName,
+        })
+        return response.data
+    },
+
+    deleteFolder: async (campaignId: string, folderName: string) => {
+        const response = await api.delete(`/backblaze/deleteFolder/${campaignId}/${folderName}`)
+        return response.data
+    },
+
 }

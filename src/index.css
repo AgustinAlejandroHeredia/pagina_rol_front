@@ -977,6 +977,20 @@ p, h1, h2, h3 {
   margin: 0;
 }
 
+.upload-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.delete-folder-button {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  align-self: unset;
+}
+
 
 
 

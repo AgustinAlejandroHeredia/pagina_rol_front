@@ -12,6 +12,11 @@ import { MainLayout } from "./layouts/MainLayout"
 import { CoordinatorLayout } from "./layouts/CoordinatorLayout"
 import { CompendiumPage } from "./pages/Compendium"
 
+// VIEW FILES
+import { ViewImage } from "./pages/ViewFiles/ViewImage"
+import { ViewPdf } from "./pages/ViewFiles/ViewPdf"
+import { ViewText } from "./pages/ViewFiles/ViewText"
+
 export function AppRouter() {
   return (
     <Routes>
@@ -51,6 +56,20 @@ export function AppRouter() {
 
         <Route element={<MainLayout />}>
           <Route path="/view_compendium/:campaignId" element={<CompendiumPage/>}/>
+        </Route>
+
+        {/* VIEW FILES */}
+
+        <Route element={<MainLayout />}>
+          <Route path="/view/images/:fileId" element={<ViewImage/>}/>
+        </Route>
+
+        <Route element={<MainLayout />}>
+          <Route path="/view/pdf/:fileId" element={<ViewPdf/>}/>
+        </Route>
+
+        <Route element={<MainLayout />}>
+          <Route path="/view/text/:fileId" element={<ViewText/>}/>
         </Route>
 
       </Route>
