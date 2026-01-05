@@ -10,6 +10,15 @@ export function ViewText() {
 
   const [content, setContent] = useState<string>("");
 
+  // Descargar archivo
+  const handleDownload = () => {
+    if (!fileUrl) return
+    const link = document.createElement("a")
+    link.href = fileUrl
+    link.download = "file.txt"; // podés poner un nombre dinámico si lo recibís del backend
+    link.click()
+  }
+
   useEffect(() => {
     if (!fileUrl) return;
 
@@ -27,43 +36,62 @@ export function ViewText() {
     loadText();
   }, [fileUrl]);
 
-  if (loading) return <div>Loading file...</div>;
-  if (error) return <div>{error}</div>;
-  if (!fileUrl) return <div>No file to display</div>;
+  if (loading)
+    return <div className="create-campaign-message-successful">Loading file...</div>;
+  if (error)
+    return <div className="create-campaign-message-unsuccessful">{error}</div>;
+  if (!fileUrl)
+    return <div className="create-campaign-message-unsuccessful">No file to display</div>;
 
   // Detectamos extensión a partir del fileId o URL
   const extension = fileUrl.split('.').pop()?.toLowerCase() || "txt";
 
-  // Si es HTML, renderizamos como HTML
-  if (extension === "html") {
-    return (
-      <div
-        style={{ padding: "20px" }}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-    );
-  }
-
-  // Default: txt
   return (
-    <pre
-        style={{
+    <div style={{ padding: "20px" }}>
+      {/* Botón de descarga arriba a la derecha */}
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>
+        <button
+          className="create-campaign-button"
+          onClick={handleDownload}
+        >
+          Download
+        </button>
+      </div>
+
+      {/* Contenido del archivo */}
+      {extension === "html" ? (
+        <div
+          dangerouslySetInnerHTML={{ __html: content }}
+          style={{
+            backgroundColor: "#f5f5f5",
+            color: "#111",
+            padding: "20px",
+            borderRadius: "6px",
+            maxHeight: "90vh",
+            overflowY: "auto",
+          }}
+        />
+      ) : (
+        <pre
+          style={{
             padding: "20px",
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
             backgroundColor: "#f5f5f5",
-            color: "#111", // más oscuro
-            fontFamily: "monospace", // fuente monoespaciada
-            fontSize: "16px", // tamaño legible
+            color: "#111",
+            fontFamily: "monospace",
+            fontSize: "16px",
             lineHeight: "1.5",
             borderRadius: "6px",
             maxHeight: "90vh",
             overflowY: "auto",
             WebkitFontSmoothing: "antialiased",
             MozOsxFontSmoothing: "grayscale",
-        }}
-    >
-        {content}
-    </pre>
+          }}
+        >
+          {content}
+        </pre>
+      )}
+    </div>
   );
 }

@@ -107,8 +107,24 @@ export function CompendiumPage() {
             return
         }
 
-        // LOGICA PARA DESCARGAR EL ARCHIVO
+        const downloadFile = async () => {
+            try {
+                const response = await fetch(`/backblaze/getFileById/${fileId}`)
+                const blob = await response.blob()
+                const url = URL.createObjectURL(blob)
 
+                const link = document.createElement("a")
+                link.href = url
+                link.download = fileName; // usamos el nombre real del archivo
+                link.click()
+
+                URL.revokeObjectURL(url)
+            } catch (error) {
+                console.error("Error downloading file:", error)
+            }
+        }
+
+        downloadFile()
     }
 
     const handleConfirmDeleteFile = (fileName: string, fileId: string) => {
@@ -440,7 +456,7 @@ export function CompendiumPage() {
                     image/png,
                     image/jpeg,
                     image/jpg,
-                    text/plain,
+                    text/plain,b
                     text/html,
                     application/pdf,
                     application/vnd.openxmlformats-officedocument.wordprocessingml.document,
