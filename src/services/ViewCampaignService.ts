@@ -24,6 +24,11 @@ export const ViewCampaignService = {
         return response.data
     },
 
+    isInCampaign: async (campaignId: string) => {
+        const response = await api.get<boolean>(`/campaigns/isInCampaign/${campaignId}`)
+        return response.data
+    },
+
     isDungeonMaster: async (campaignId: string): Promise<boolean> => {
         const response = await api.get<boolean>(`/campaigns/is_dungeon_master/${campaignId}`)
         return response.data
@@ -52,6 +57,21 @@ export const ViewCampaignService = {
             inviteData,
         )
         return response.data
-    }
+    },
+
+    uploadMap: async (campaignId: string, formData: FormData) => {
+        const response = await api.post<string>(`/backblaze/uploadCampaignMap/${campaignId}`, formData)
+        return response.data
+    },
+
+    getMap: async (fileId: string) => {
+        const response = await api.get(
+            `/backblaze/getFileById/${fileId}`,
+            {
+                responseType: 'blob',
+            }
+        )
+        return response.data
+    },
 
 }

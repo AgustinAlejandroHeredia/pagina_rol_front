@@ -20,6 +20,7 @@ import { SideCard } from '../components/SideCard'
 import { AddLocationPanel } from '../components/AddLocation'
 import { EditCampaign } from '../components/EditCampaign'
 import { ViewPlayers } from '../components/ViewPlayers'
+import { ViewCampaignService } from '../services/ViewCampaignService'
 
 
 
@@ -35,6 +36,7 @@ export function ViewCampaign() {
     }
 
     const { selectedOption, setSelectedOption } = useCoordinator()
+    const { isDungeonMaster } = useCoordinator()
 
     // SIDECARD
     const [isPanelOpen, setIsPanelOpen] = useState(false)
@@ -46,7 +48,17 @@ export function ViewCampaign() {
 
     const hasOpenedRef = useRef(false)
 
-    const { campaign, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId)
+    // MAP UPLOAD
+    const [showUploadOption, setShowUploadOption] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [selectedMap, setSelectedMap] = useState<File | null>(null)
+    const [uploadingMap, setUploadingMap] = useState(false)
+    const [uploadingMapSuccess, setUploadingMapSuccess] = useState(false)
+    const [uploadingMapError, setUploadingMapError] = useState(false)
+
+    const [mapUrl, setMapUrl] = useState<string | null>(null)
+
+    const { campaign, map, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId)
 
     useEffect(() => {
 
@@ -82,7 +94,24 @@ export function ViewCampaign() {
             hasOpenedRef.current = false;
         }
 
-    }, [selectedOption, campaignId, isAuthenticated, setSelectedOption])
+    }, [campaign, selectedOption, campaignId, isAuthenticated, setSelectedOption])
+
+    useEffect(() => {
+        if (!map) {
+            setShowUploadOption(true)
+            setMapUrl(null)
+            return
+        }
+
+        setShowUploadOption(false)
+
+        const url = URL.createObjectURL(map)
+        setMapUrl(url)
+
+        return () => {
+            URL.revokeObjectURL(url)
+        }
+    }, [map])
 
     if(loading) return <Loading />
 
@@ -90,11 +119,94 @@ export function ViewCampaign() {
         console.log(error)
         return <ViewCampaignError/>
     }
+
+    const handleUploadMap = () => {
+        fileInputRef.current?.click()
+    }
+
+    const handleSelectMap = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if(event.target.files){
+            const file = event.target.files?.[0]
+
+            if(!file) return
+
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']
+            if (!allowedTypes.includes(file.type)) {
+                setUploadingMapError(true)
+                event.target.value = ''
+                return
+            }
+
+            setUploadingMap(true)
+            setUploadingMapSuccess(false)
+            setUploadingMapError(false)
+
+            try {
+
+                const formData = new FormData()
+                formData.append('map', file)
+
+                await ViewCampaignService.uploadMap(campaignId, formData)
+
+                setSelectedMap(file)
+                setShowUploadOption(false)
+
+            } catch {
+                setUploadingMapError(true)
+            } finally {
+                setUploadingMap(false)
+                setSelectedMap(null)
+                if(fileInputRef.current) { 
+                    fileInputRef.current.value = ''
+                }
+            }
+        }
+    }
     
     return (
         <div>
             
-            <h1> CAMPAIGN MAP </h1>
+            {showUploadOption && (
+                <div className="content-container">
+                    <h5 className="page-message">
+                        Welcome traveler, for now there is no map loded for you to use it. 
+                    </h5>
+
+
+                    {uploadingMapSuccess && (
+                        <div className='create-campaign-message-successful'>
+                            Map uploaded successfully.
+                        </div>
+                    )}
+
+                    {uploadingMapError && (
+                        <div className='create-campaign-message-unsuccessful'>
+                            Something went wrong, please try later.
+                        </div>
+                    )}
+
+
+                    <div 
+                        className={`create-campaign-button centered-wide ${uploadingMap ? 'disabled' : ''}`}
+                        onClick={() => handleUploadMap()}
+                    >
+                        {uploadingMap && <span className="spinner"></span>}
+                        {uploadingMap ? ' Uploading...' : 'Upload Map'}
+                    </div>
+                </div>
+            )}
+
+            {!showUploadOption && (
+                <div className="campaign-map-container">
+                    {mapUrl && (
+                        <img
+                            src={mapUrl}
+                            alt="Campaign Map"
+                            className="campaign-map-image"
+                        />
+                    )}
+                </div>
+            )}
 
             <SideCard isOpen={isPanelOpen} onClose={closePanel}>
 
@@ -111,6 +223,19 @@ export function ViewCampaign() {
                 )} 
 
             </SideCard>
+
+            {/* Invisible input for file uploading */}
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleSelectMap}
+                style={{ display: "none" }}
+                accept="
+                    image/png,
+                    image/jpeg,
+                    image/jpg,
+                "
+            />
 
         </div>
     )

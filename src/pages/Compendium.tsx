@@ -239,7 +239,6 @@ export function CompendiumPage() {
         } catch (error) {
             setCreatingFolderError(true)
         } finally {
-            showNewFolderOptionsOff()
             setCreatingFolder(false)
             setFolderName('')
         }

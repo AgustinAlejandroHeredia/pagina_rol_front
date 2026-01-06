@@ -2,6 +2,11 @@ import { api } from "../api/api"
 
 export const CompendiumService = {
 
+    isInCampaign: async (campaignId: string) => {
+        const response = await api.get<boolean>(`/campaigns/isInCampaign/${campaignId}`)
+        return response.data
+    },
+
     getCompendiumFiles: async (campaignId: string) => {
         const response = await api.get(`/backblaze/compendium/${campaignId}`)
         //console.log("COMPENDIUM CONTENT : ",response.data)

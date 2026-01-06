@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { CompendiumService } from "../services/CompendiumService"
 
+import { useNavigate } from "react-router-dom"
+
 // AUTH0
 import { useAuth0 } from "@auth0/auth0-react"
 import { useAuth0Bridge } from "../auth/auth0-bridge"
@@ -81,6 +83,12 @@ export function useCompendium (campaign_id: string){
     useEffect(() => {
         const loadCompendium = async () => {
             try {
+
+                const isInCampaign = await CompendiumService.isInCampaign(campaign_id)
+                if(!isInCampaign){
+                    const navigate = useNavigate()
+                    navigate("/")
+                }
 
                 setLoading(true)
                 setError(null)
