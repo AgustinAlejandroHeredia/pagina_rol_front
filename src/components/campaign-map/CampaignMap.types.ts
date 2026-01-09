@@ -1,9 +1,12 @@
+import type { MapElem } from "../../types/types"
+
 export interface CampaignMapProps {
     imageUrl: string
     campaignId: string
     isDungeonMaster?: boolean
     selectionMode?: boolean
     onMapClick?: (coords: { x: number; y: number }) => void
+    onMapElemSelect?: (elem: MapElem) => void
     rightSpace?: boolean
 }
 

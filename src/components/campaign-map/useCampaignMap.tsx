@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react'
+
+// TYPES
 import type { MapCoords } from './CampaignMap.types'
+import type { MapElem } from '../../types/types'
 
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -23,6 +26,7 @@ export function useCampaignMap(
     selectionMode: boolean,
     campaignId: string,
     onMapClick?: (coords: MapCoords) => void,
+    onMapElemSelect?: (elem: MapElem) => void,
 ) {
     const mapRef = useRef<L.Map | null>(null)
     const containerRef = useRef<HTMLDivElement | null>(null)
@@ -81,7 +85,7 @@ export function useCampaignMap(
             })
 
             marker.on('click', () => {
-                console.log(elem.name)
+                onMapElemSelect?.(elem)
             })
 
             marker.addTo(markersRef.current!)

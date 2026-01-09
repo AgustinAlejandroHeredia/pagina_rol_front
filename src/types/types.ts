@@ -9,7 +9,18 @@ export interface CampaignHome {
   players: PlayerHome[]
 }
 
+export interface NewMapElem {
+  name: string,
+  description: string,
+  type: string,
+  visible: boolean,
+  layer: number,
+  x: number,
+  y: number,
+}
+
 export interface MapElem {
+  _id: string,
   name: string,
   description: string,
   type: string,

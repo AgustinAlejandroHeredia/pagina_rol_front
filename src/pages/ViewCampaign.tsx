@@ -21,9 +21,11 @@ import { AddLocationPanel } from '../components/AddLocation'
 import { EditCampaign } from '../components/EditCampaign'
 import { ViewPlayers } from '../components/ViewPlayers'
 import { ViewCampaignService } from '../services/ViewCampaignService'
+import { ViewMapElem } from '../components/ViewMapElem'
 
 // MAP - LEAFLET
 import { CampaignMap } from '../components/campaign-map/CampaignMap'
+import type { MapElem } from '../types/types'
 
 
 
@@ -66,7 +68,10 @@ export function ViewCampaign() {
     const [selectedCoords, setSelectedCoords] = useState<{ x: number; y: number } | null>(null)
     const spaceRight = isPanelOpen && selectedOption === 'add_location';
 
-    const { campaign, map, mapElems, view_users_data, isAuthenticated, loading, error, loadMapElems } = useViewCampaign(campaignId)
+    // MAP - ELEM SELECTED
+    const [selectedMapElem, setSelectedMapElem] = useState<MapElem | null>(null)
+
+    const { campaign, map, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId)
 
 
 
@@ -221,6 +226,11 @@ export function ViewCampaign() {
                                 setSelectedCoords(coords)
                                 setIsChoosingLocation(false)
                             }}
+                            onMapElemSelect={(elem) => {
+                                setSelectedMapElem(elem)
+                                setSelectedOption('view_map_elem')
+                                setIsPanelOpen(true)
+                            }}
                             rightSpace = {spaceRight}
                         />
                     )}
@@ -253,7 +263,14 @@ export function ViewCampaign() {
 
                 {isAuthenticated && selectedOption === 'edit_campaign' && campaignId && (
                     <EditCampaign campaignId={campaignId} campaignName={campaign!.name} campaignDescription={campaign!.description} campaignSystem={campaign!.system}/>
-                )} 
+                )}
+
+                {isAuthenticated && selectedOption === 'view_map_elem' && selectedMapElem && (
+                    <ViewMapElem 
+                        mapElem={selectedMapElem}
+                        isDungeonMaster    
+                    />
+                )}
 
             </SideCard>
 

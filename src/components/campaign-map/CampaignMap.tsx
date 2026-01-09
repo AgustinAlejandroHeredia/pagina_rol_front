@@ -8,10 +8,11 @@ export function CampaignMap({
   campaignId,
   selectionMode = false,
   onMapClick,
+  onMapElemSelect,
   rightSpace,
 }: CampaignMapProps) {
 
-    const { mapRef, containerRef } = useCampaignMap(imageUrl, selectionMode, campaignId, onMapClick)
+    const { mapRef, containerRef } = useCampaignMap(imageUrl, selectionMode, campaignId, onMapClick, onMapElemSelect)
 
     useEffect(() => {
         if(!mapRef.current || !containerRef.current) return;

@@ -1,5 +1,5 @@
 import { api } from "../api/api"
-import type { MapElem, UpdateCampaign } from "../types/types"
+import type { NewMapElem, UpdateCampaign } from "../types/types"
 
 type InvitePayload = {
     campaign_id: string
@@ -39,7 +39,7 @@ export const ViewCampaignService = {
         return response.data
     },
 
-    createMapLocation: async (campaignId: string, formData: MapElem) => {
+    createMapLocation: async (campaignId: string, formData: NewMapElem) => {
         const response = await api.post(
             `/mapelem/${campaignId}`, 
             formData
@@ -74,9 +74,9 @@ export const ViewCampaignService = {
         return response.data
     },
 
-    getMapsElems: async (campaignId: string) => {
-        const response = await api.get<[]>(`/mapelem/getMapElems/${campaignId}`)
+    updateMapElem: async (mapElemId: string, updateData: NewMapElem) => {
+        const response = await api.patch(`/mapelem/${mapElemId}`, updateData)
         return response.data
-    }
+    },
 
 }
