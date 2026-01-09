@@ -74,4 +74,9 @@ export const ViewCampaignService = {
         return response.data
     },
 
+    getMapsElems: async (campaignId: string) => {
+        const response = await api.get<[]>(`/mapelem/getMapElems/${campaignId}`)
+        return response.data
+    }
+
 }

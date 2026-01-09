@@ -22,6 +22,9 @@ import { EditCampaign } from '../components/EditCampaign'
 import { ViewPlayers } from '../components/ViewPlayers'
 import { ViewCampaignService } from '../services/ViewCampaignService'
 
+// MAP - LEAFLET
+import { CampaignMap } from '../components/campaign-map/CampaignMap'
+
 
 
 export function ViewCampaign() {
@@ -58,7 +61,14 @@ export function ViewCampaign() {
 
     const [mapUrl, setMapUrl] = useState<string | null>(null)
 
-    const { campaign, map, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId)
+    // MAP USAGE
+    const [isChoosingLocation, setIsChoosingLocation] = useState(false)
+    const [selectedCoords, setSelectedCoords] = useState<{ x: number; y: number } | null>(null)
+    const spaceRight = isPanelOpen && selectedOption === 'add_location';
+
+    const { campaign, map, mapElems, view_users_data, isAuthenticated, loading, error, loadMapElems } = useViewCampaign(campaignId)
+
+
 
     useEffect(() => {
 
@@ -96,6 +106,8 @@ export function ViewCampaign() {
 
     }, [campaign, selectedOption, campaignId, isAuthenticated, setSelectedOption])
 
+
+
     useEffect(() => {
         if (!map) {
             setShowUploadOption(true)
@@ -109,9 +121,11 @@ export function ViewCampaign() {
         setMapUrl(url)
 
         return () => {
-            URL.revokeObjectURL(url)
+            if(url) URL.revokeObjectURL(url)
         }
     }, [map])
+
+
 
     if(loading) return <Loading />
 
@@ -199,10 +213,15 @@ export function ViewCampaign() {
             {!showUploadOption && (
                 <div className="campaign-map-container">
                     {mapUrl && (
-                        <img
-                            src={mapUrl}
-                            alt="Campaign Map"
-                            className="campaign-map-image"
+                        <CampaignMap
+                            imageUrl={mapUrl}
+                            campaignId={campaignId}
+                            selectionMode={isChoosingLocation}
+                            onMapClick={(coords) => {
+                                setSelectedCoords(coords)
+                                setIsChoosingLocation(false)
+                            }}
+                            rightSpace = {spaceRight}
                         />
                     )}
                 </div>
@@ -214,8 +233,22 @@ export function ViewCampaign() {
                     <ViewPlayers campaign_id={campaignId} players={view_users_data}/>
                 )}
 
+                {/* onSuccess={async () => await loadMapElems() } */}
+
                 {isAuthenticated && selectedOption === 'add_location' && campaignId && (
-                    <AddLocationPanel campaignId={campaignId}/>
+                    <AddLocationPanel 
+                        campaignId={campaignId}
+                        onChooseLocation={() => {
+                            setIsChoosingLocation(true)
+                            setSelectedCoords(null)
+                        }}
+                        coords={selectedCoords}
+                        choosingLocation={isChoosingLocation}
+                        cancelChooseLocation={() => {
+                            setIsChoosingLocation(false)
+                            setSelectedCoords(null)
+                        }}
+                    />
                 )}
 
                 {isAuthenticated && selectedOption === 'edit_campaign' && campaignId && (

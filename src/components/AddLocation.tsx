@@ -1,15 +1,21 @@
 import { useState, type ChangeEvent } from "react"
 import { ViewCampaignService } from "../services/ViewCampaignService"
 
+import type { MapCoords } from "./campaign-map/CampaignMap.types"
+
 // Material UI
 import { Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, TextField, Stack, Divider } from "@mui/material"
 
 type AddLocationPanelProps = {
-  campaignId: string
-  onSuccess?: () => void
+    campaignId: string
+    onSuccess?: () => void
+    onChooseLocation: () => void
+    coords: MapCoords | null
+    choosingLocation: boolean
+    cancelChooseLocation: () => void
 }
 
-export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelProps) => {
+export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coords, choosingLocation, cancelChooseLocation} : AddLocationPanelProps) => {
 
     // Messages
     const [showMessageOfEmpty, setShowMessageOfEmpty] = useState(false)
@@ -18,7 +24,13 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
 
     const createLocation = () => {
         
-        if(formData.name === '' || formData.description === '' || formData.type === '' || formData.layer === ''){
+        if(
+            formData.name === '' || 
+            formData.description === '' || 
+            formData.type === '' || 
+            formData.layer === '' ||
+            coords === null    
+        ){
             setShowMessageOfEmpty(true)
             return
         }
@@ -27,7 +39,9 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
             setShowMessageOfEmpty(false)
             const payload = {
                 ...formData,
-                layer: formData.layer
+                layer: formData.layer,
+                x: coords.x,
+                y: coords.y,
             }
 
             ViewCampaignService.createMapLocation(campaignId, payload)
@@ -310,6 +324,46 @@ export const AddLocationPanel = ({ campaignId, onSuccess } : AddLocationPanelPro
                         },
                     }}
                 />
+
+                {/* LOCATION COORDS */}
+                {coords && (
+                    <div
+                        style={{
+                            padding: '8px 12px',
+                            border: '1px dashed var(--color-navbar)',
+                            borderRadius: '6px',
+                            color: 'var(--color-text)',
+                            fontSize: '0.9rem',
+                        }}
+                    >
+                        <strong>Selected coordinates:</strong>
+                        <br />
+                            X: {coords.x.toFixed(2)}
+                        <br />
+                            Y: {coords.y.toFixed(2)}
+                    </div>
+                )}
+
+                <div className="upload-actions">
+
+                    <div
+                        className="create-campaign-button"
+                        onClick={onChooseLocation}
+                    >
+                        {choosingLocation && <span className="spinner"></span>}
+                        {choosingLocation ? ' Choosing...' : 'Choose Map Location'}
+                    </div>
+
+                    {choosingLocation && (
+                        <div
+                            className="eliminate-campaign-button delete-folder-button"
+                            onClick={cancelChooseLocation}
+                        >
+                            {choosingLocation ? 'Cancel' : ''}
+                        </div>
+                    )}
+
+                </div>
 
                 {/*
                 <Divider

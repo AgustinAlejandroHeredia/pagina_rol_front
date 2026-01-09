@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { ViewCampaignService } from "../services/ViewCampaignService";
 
 import { useCoordinator } from "../layouts/Coordinator";
 
+import { type MapElem } from "../types/types";
+
 // AUTH0
 import { useAuth0 } from "@auth0/auth0-react";
 import type { Campaign } from "../types/types";
 import { useAuth0Bridge } from "../auth/auth0-bridge";
+
 import { useNavigate } from "react-router-dom";
 
 export function useViewCampaign(campaign_id: string) {
@@ -34,6 +37,16 @@ export function useViewCampaign(campaign_id: string) {
     // COORDINATOR
     const { setIsLoadingCampaign } = useCoordinator()
     const { setIsDungeonMaster } = useCoordinator()
+
+    // MAP ELEMS
+    const [mapElems, setMapElems] = useState<MapElem[]>([])
+
+
+    const loadMapElems = useCallback(async () => {
+        const response = await ViewCampaignService.getMapsElems(campaign_id)
+        setMapElems(response)
+    }, [campaign_id])
+
 
     useEffect(() => {
         if(!isAuthenticated || authLoading) return
@@ -72,6 +85,8 @@ export function useViewCampaign(campaign_id: string) {
                     setMap(mapFile)
                 }
 
+                //await loadMapElems()
+
             } catch (err: any) {
                 console.log("Error en useViewCampaign: ", err)
                 setError(err.message || "Error desconocido")
@@ -83,6 +98,6 @@ export function useViewCampaign(campaign_id: string) {
         loadViewCampaign()
     },[isAuthenticated])
 
-    return { campaign, map, view_users_data, isAuthenticated, loading, error }
+    return { campaign, map, mapElems, view_users_data, isAuthenticated, loading, error, loadMapElems }
 
 }

@@ -1,0 +1,18 @@
+.campaign-map-wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+.campaign-map-leaflet-container {
+    width: 100%;
+    height: calc(100vh - var(--navbar-height));
+    background-color: var(--color-background);
+}
+
+/* Cuando la SideCard esta abierta */
+.campaign-map-leaflet-container.with-sidecard {
+    width: calc(100% - 22vw);
+    min-width: calc(100% - 420px);
+    float: left;
+}

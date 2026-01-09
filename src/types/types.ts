@@ -15,6 +15,8 @@ export interface MapElem {
   type: string,
   visible: boolean,
   layer: number,
+  x: number,
+  y: number,
 }
 
 export interface PlayerCampaign {

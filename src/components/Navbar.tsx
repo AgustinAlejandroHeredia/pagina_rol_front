@@ -3,6 +3,7 @@ import LogoutButton from './LogoutButton'
 
 // LOGO
 import logo from '../assets/dice_image_web_icon.png'
+import default_user_picture from '../assets/default_user_picture.png'
 
 // AUTH0
 import { useAuth0 } from '@auth0/auth0-react'
@@ -149,22 +150,47 @@ export const Navbar = () => {
 
         {isAuthenticated && user && !isLoading && (
           <div className="user-menu">
-            <img
-              src={user.picture}
-              alt={user.name}
-              title={user.name}
-              className="user-avatar"
-              onClick={() => setOpen(!open)}
-            />
-            <span className="tooltip-text">{user.name}</span>
-
-            {open && (
-              <div className="user-card">
+            
+            {!isLoading ? (
+              <>
                 <img
                   src={user.picture}
                   alt={user.name}
-                  className="user-card-avatar"
+                  title={user.name}
+                  className="user-avatar"
+                  onClick={() => setOpen(!open)}
                 />
+                <span className="tooltip-text">{user.name}</span>
+              </>
+            ) : (
+              <>
+                <img
+                  src={default_user_picture}
+                  alt={"default_user"}
+                  title={"default_user"}
+                  className="user-avatar"
+                  onClick={() => setOpen(!open)}
+                />
+                <span className="tooltip-text">Loading {user.name} profile picture...</span>
+              </>
+            )}
+
+            {open && (
+              <div className="user-card">
+
+                {!isLoading ? (
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    className="user-card-avatar"
+                  />
+                ) : (
+                  <img
+                    src={default_user_picture}
+                    alt={"default_user"}
+                    className="user-card-avatar"
+                  />
+                )}
 
                 <p className="user-name">{user.name}</p>
                 <p className="user-email">{user.email}</p>
