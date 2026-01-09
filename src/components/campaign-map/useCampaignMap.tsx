@@ -1,5 +1,10 @@
 import { useEffect, useRef } from 'react'
 
+// ICONS
+import { createMapElemIcon } from './icons/mapElemIcon.factory';
+import { LiaMapMarkerAltSolid } from "react-icons/lia";
+import ReactDOMServer from "react-dom/server"
+
 // TYPES
 import type { MapCoords } from './CampaignMap.types'
 import type { MapElem } from '../../types/types'
@@ -60,27 +65,27 @@ export function useCampaignMap(
         elements.forEach(elem => {
 
             /*
-            const marker = L.circleMarker(
-                [elem.y, elem.x],
-                {
-                    radius: 8,
-                    color: '#ff0000',
-                    weight: 2,
-                    fill: true,
-                    fillColor: '#ff0000',
-                    fillOpacity: 0.9,
-                    pane: 'markerPane',
-                }
-            )
-            */
+            const mapElemIcon = L.divIcon({
+            html: ReactDOMServer.renderToString(
+                <LiaMapMarkerAltSolid
+                    size={32}
+                    color="var(--color-text)"
+                />
+            ),
+                className: "custom-map-elem-icon",
+                iconSize: [32, 32],
+                iconAnchor: [16, 32], // punta del marcador
+            })
+            */ 
 
             const marker = L.marker(
-                [elem.y, elem.x]
+                [elem.y, elem.x],
+                { icon: createMapElemIcon(elem) }
             )
 
             marker.bindTooltip(elem.name, {
                 direction: 'top',
-                offset: [-13, -10],
+                offset: [1, -30],
                 opacity: 0.9,
             })
 
@@ -193,8 +198,13 @@ export function useCampaignMap(
         return () => {
             map.off('zoomend', handleZoomEnd)
         }
-        }, [])
+    }, [])
 
+    const reloadMarkers = () => {
+        if(currentLayerRef.current != null){
+            loadLayer(currentLayerRef.current)
+        }
+    }
 
-    return { mapRef, containerRef }
+    return { mapRef, containerRef, reloadMarkers }
 }

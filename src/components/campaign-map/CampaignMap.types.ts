@@ -8,6 +8,7 @@ export interface CampaignMapProps {
     onMapClick?: (coords: { x: number; y: number }) => void
     onMapElemSelect?: (elem: MapElem) => void
     rightSpace?: boolean
+    onReloadMapElems?: (reloadMarkers: () => void) => void
 }
 
 export interface MapSize {
@@ -24,3 +25,13 @@ export interface RelativeCoords {
     x: number // 0 - 1
     y: number // 0 - 1
 }
+
+export type MapElemType = 
+  | 'capital'
+  | 'city'
+  | 'continent'
+  | 'location'
+  | 'interest_point'
+  | 'geography_mark'
+  | 'deity'
+  | 'area'

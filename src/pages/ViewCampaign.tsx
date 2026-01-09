@@ -68,6 +68,10 @@ export function ViewCampaign() {
     const [selectedCoords, setSelectedCoords] = useState<{ x: number; y: number } | null>(null)
     const spaceRight = isPanelOpen && selectedOption === 'add_location';
 
+    // RELOAD MAP FUNCTION
+    const mapRefReload = useRef<(() => void) | undefined>(undefined)
+    //const mapRefReload = useRef<() => void>()
+
     // MAP - ELEM SELECTED
     const [selectedMapElem, setSelectedMapElem] = useState<MapElem | null>(null)
 
@@ -181,6 +185,17 @@ export function ViewCampaign() {
             }
         }
     }
+
+    const updateMapAndCard = () => {
+        setIsPanelOpen(false)
+        setSelectedCoords(null)
+        mapRefReload.current?.()
+    }
+
+    const updateMap = () => {
+        setSelectedCoords(null)
+        mapRefReload.current?.()
+    }
     
     return (
         <div>
@@ -232,6 +247,9 @@ export function ViewCampaign() {
                                 setIsPanelOpen(true)
                             }}
                             rightSpace = {spaceRight}
+                            onReloadMapElems={(reloadFunction) => {
+                                mapRefReload.current = reloadFunction
+                            }}
                         />
                     )}
                 </div>
@@ -248,6 +266,7 @@ export function ViewCampaign() {
                 {isAuthenticated && selectedOption === 'add_location' && campaignId && (
                     <AddLocationPanel 
                         campaignId={campaignId}
+                        onSuccess={updateMap}
                         onChooseLocation={() => {
                             setIsChoosingLocation(true)
                             setSelectedCoords(null)
@@ -268,7 +287,9 @@ export function ViewCampaign() {
                 {isAuthenticated && selectedOption === 'view_map_elem' && selectedMapElem && (
                     <ViewMapElem 
                         mapElem={selectedMapElem}
-                        isDungeonMaster    
+                        isDungeonMaster
+                        onSuccessDel={updateMapAndCard}
+                        onSuccessSave={updateMap}
                     />
                 )}
 

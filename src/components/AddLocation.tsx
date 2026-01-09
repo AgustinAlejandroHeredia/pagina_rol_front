@@ -1,10 +1,10 @@
-import { useState, type ChangeEvent } from "react"
+import { useEffect, useState, type ChangeEvent } from "react"
 import { ViewCampaignService } from "../services/ViewCampaignService"
 
 import type { MapCoords } from "./campaign-map/CampaignMap.types"
 
 // Material UI
-import { Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, TextField, Stack, Divider } from "@mui/material"
+import { Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, TextField, Stack } from "@mui/material"
 
 type AddLocationPanelProps = {
     campaignId: string
@@ -22,7 +22,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
     const [done, setDone] = useState(false)
     const [error, setError] = useState(false)
 
-    const createLocation = () => {
+    const createLocation = async () => {
         
         if(
             formData.name === '' || 
@@ -44,8 +44,9 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                 y: coords.y,
             }
 
-            ViewCampaignService.createMapLocation(campaignId, payload)
+            await ViewCampaignService.createMapLocation(campaignId, payload)
             setDone(true)
+
             onSuccess?.()
         }catch (error) {
             console.log('Error creating new location : ', error)
@@ -289,7 +290,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                     variant="outlined"
                     type="number"
                     inputProps={{
-                        min: 0,
+                        min: 1,
                         step: 1,
                     }}
                     sx={{

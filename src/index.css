@@ -1041,13 +1041,58 @@ p, h1, h2, h3 {
 
 
 .campaign-map-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 .campaign-map-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* o cover */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* o cover */
+}
+
+
+
+
+
+.map-elem-card {
+  color: var(--color-text);
+  padding: 0rem 1rem;
+}
+
+.map-elem-meta {
+  text-align: left;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.map-elem-title {
+  text-align: center; /* mantiene lo que ya te gusta */
+  font-size: 1.4rem;
+}
+
+.map-elem-description {
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.map-elem-title.fantasy {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.08em;
+}
+
+.map-elem-description.lore {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.map-elem-meta.map-style {
+  font-family: 'IM Fell English SC', serif;
+  letter-spacing: 0.12em;
 }

@@ -10,9 +10,16 @@ export function CampaignMap({
   onMapClick,
   onMapElemSelect,
   rightSpace,
+  onReloadMapElems,
 }: CampaignMapProps) {
 
-    const { mapRef, containerRef } = useCampaignMap(imageUrl, selectionMode, campaignId, onMapClick, onMapElemSelect)
+    const { mapRef, containerRef, reloadMarkers } = useCampaignMap(imageUrl, selectionMode, campaignId, onMapClick, onMapElemSelect)
+
+    useEffect(() => {
+        if(onReloadMapElems){
+            onReloadMapElems(reloadMarkers)
+        }
+    }, [reloadMarkers, onReloadMapElems])
 
     useEffect(() => {
         if(!mapRef.current || !containerRef.current) return;
