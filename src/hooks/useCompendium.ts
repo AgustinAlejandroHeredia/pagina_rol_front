@@ -30,13 +30,13 @@ export function useCompendium (campaign_id: string){
 
     const [loading, setLoading] = useState(true)
 
-    const [isAdmin, setIsAdmin] = useState<boolean>(false)
-
     const [isDungeonMaster, setIsDungeonMaster] = useState<boolean>(false)
 
     const { isAuthenticated } = useAuth0()
     
     const authBridge = useAuth0Bridge()
+
+    const navigate = useNavigate()
 
 
 
@@ -91,7 +91,6 @@ export function useCompendium (campaign_id: string){
 
                 const isInCampaign = await CompendiumService.isInCampaign(campaign_id)
                 if(!isInCampaign){
-                    const navigate = useNavigate()
                     navigate("/")
                 }
 

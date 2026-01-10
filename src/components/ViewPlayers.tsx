@@ -14,12 +14,14 @@ import { ViewCampaignService } from "../services/ViewCampaignService";
 type ViewPlayersPanelProps = {
     campaign_id: string
     players: ViewPlayerType[]
+    isDungeonMaster: boolean
     onSuccess?: () => void
 }
 
 export const ViewPlayers = ({
     campaign_id,
     players,
+    isDungeonMaster,
     onSuccess
 } : ViewPlayersPanelProps) => {
 
@@ -114,17 +116,18 @@ export const ViewPlayers = ({
                     )}
                 </div>
 
-
-
-                <Divider
-                    sx={{
-                        borderColor: 'var(--color-text)',
-                        opacity: 1,
-                        my: 0,
-                    }}
-                />
-
             </Stack>
+
+            {isDungeonMaster && (
+            <>
+
+            <Divider
+                sx={{
+                    borderColor: 'var(--color-text)',
+                    opacity: 1,
+                    my: 0,
+                }}
+            />
 
             {!showHelp && (
                 <div className="help-card-icon">
@@ -153,6 +156,7 @@ export const ViewPlayers = ({
             <Stack spacing={3}>
 
             <div>
+                
                 <TextField
                     fullWidth
                     name="email"
@@ -231,6 +235,9 @@ export const ViewPlayers = ({
             </div>
 
             </Stack>
+
+            </>
+            )}
 
         </div>
     )

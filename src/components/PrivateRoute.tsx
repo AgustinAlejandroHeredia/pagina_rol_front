@@ -5,11 +5,17 @@ import Loading from "./Loading";
 export const PrivateRoute = () => {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  if (isLoading) return <Loading/>;
+  if (isLoading) return <Loading/>
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return (
+      <Navigate 
+        to="/login" 
+        replace 
+        state={{ returnTo: location.pathname }}
+      />
+    )
   }
 
-  return <Outlet/>;
-};
+  return <Outlet/>
+}

@@ -258,7 +258,7 @@ export function ViewCampaign() {
             <SideCard isOpen={isPanelOpen} onClose={closePanel}>
 
                 {isAuthenticated && selectedOption === 'view_players' && campaignId && (
-                    <ViewPlayers campaign_id={campaignId} players={view_users_data}/>
+                    <ViewPlayers campaign_id={campaignId} players={view_users_data} isDungeonMaster={isDungeonMaster}/>
                 )}
 
                 {/* onSuccess={async () => await loadMapElems() } */}
@@ -287,7 +287,7 @@ export function ViewCampaign() {
                 {isAuthenticated && selectedOption === 'view_map_elem' && selectedMapElem && (
                     <ViewMapElem 
                         mapElem={selectedMapElem}
-                        isDungeonMaster
+                        isDungeonMaster={isDungeonMaster}
                         onSuccessDel={updateMapAndCard}
                         onSuccessSave={updateMap}
                     />

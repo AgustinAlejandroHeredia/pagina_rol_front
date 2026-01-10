@@ -23,9 +23,13 @@ export function PostLoginCheck() {
         const name = user.name;
         const email = user.email;
 
+        const appState = window.history.state?.usr
+        const returnTo = appState?.returnTo || "/home"
+
         const check = async() => {
             await PostLoginCheckService.checkUser(name, email)
-            navigate("/home")
+            //navigate("/home")
+            navigate(returnTo, {replace: true})
         } 
         
         check()

@@ -81,6 +81,8 @@ export const ViewMapElem = ({
 
     const saveChanges = async () => {
 
+        if(!isDungeonMaster) return
+
         resetMessages()
 
         if(originalPlayersView === newPlayersView){
@@ -123,6 +125,8 @@ export const ViewMapElem = ({
     }
 
     const deleteMapElem = async () => {
+
+        if(!isDungeonMaster) return
 
         resetMessages()
         confirmDeleteOff()
@@ -241,6 +245,14 @@ export const ViewMapElem = ({
                         </div>
                     )}
 
+                    <Divider
+                        sx={{
+                            borderColor: 'var(--color-text)',
+                            opacity: 1,
+                            my: 0,
+                        }}
+                    />
+
                     </>
                 )}
 
@@ -249,14 +261,6 @@ export const ViewMapElem = ({
                         This location has alredy been deleted. You can zoom in or out to update the map automatically.
                     </div>
                 )}
-
-                <Divider
-                    sx={{
-                        borderColor: 'var(--color-text)',
-                        opacity: 1,
-                        my: 0,
-                    }}
-                />
 
                 <div className="map-elem-card">
 
