@@ -32,6 +32,8 @@ export function useCompendium (campaign_id: string){
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
+    const [isDungeonMaster, setIsDungeonMaster] = useState<boolean>(false)
+
     const { isAuthenticated } = useAuth0()
     
     const authBridge = useAuth0Bridge()
@@ -84,18 +86,22 @@ export function useCompendium (campaign_id: string){
         const loadCompendium = async () => {
             try {
 
+                setLoading(true)
+                setError(null)
+
                 const isInCampaign = await CompendiumService.isInCampaign(campaign_id)
                 if(!isInCampaign){
                     const navigate = useNavigate()
                     navigate("/")
                 }
 
-                setLoading(true)
-                setError(null)
+                const result_dm = await CompendiumService.isDungeonMaster(campaign_id)
+                if (result_dm) {
+                    setIsDungeonMaster(true)
+                }
 
-                const perms = await authBridge.getPermissions()
-                if(perms.includes("admin:page")){
-                    setIsAdmin(true)
+                if(await authBridge.hasAdminPermission()){
+                    setIsDungeonMaster(true)
                 }
 
                 const compendiumData = await CompendiumService.getCompendiumFiles(campaign_id)
@@ -117,5 +123,5 @@ export function useCompendium (campaign_id: string){
         loadCompendium()
     }, [isAuthenticated, reloadTrigger])
 
-    return { compendium, isAuthenticated, isAdmin, loading, error, resetContent }
+    return { compendium, isAuthenticated, isDungeonMaster, loading, error, resetContent }
 }

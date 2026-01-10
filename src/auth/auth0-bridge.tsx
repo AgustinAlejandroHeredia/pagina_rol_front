@@ -1,8 +1,5 @@
-// OBTIENE EL TOKEN
-
-// implementacion de la interfaz de auth-bridge, se implementa con auth0 en un tsximport { useAuth0 } from "@auth0/auth0-react";
-import type { AuthBridge } from "./auth-bridge";
 import { useAuth0 } from "@auth0/auth0-react";
+import type { AuthBridge } from "./auth-bridge";
 
 type JwtPayload = {
   permissions?: string[];
@@ -11,35 +8,39 @@ type JwtPayload = {
 export function useAuth0Bridge(): AuthBridge {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
+  const getPermissions = async (): Promise<string[]> => {
+    if (!isAuthenticated) return [];
+
+    const token = await getAccessTokenSilently();
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
+    const payload = JSON.parse(payloadJson) as JwtPayload;
+
+    return payload.permissions ?? [];
+  };
+
+  const hasAdminPermission = async (): Promise<boolean> => {
+    const permissions = await getPermissions();
+    return permissions.includes("admin:page");
+  };
+
+  const hasDungeonMasterPermission = async (): Promise<boolean> => {
+    const permissions = await getPermissions();
+    return (
+      permissions.includes("admin:page") ||
+      permissions.includes("edit:campaign")
+    );
+  };
+
+  const getAccessToken = async () => {
+    if (!isAuthenticated) return null;
+    return await getAccessTokenSilently();
+  };
+
   return {
-
-    // Pide el token y lo devuelve
-    async getAccessToken() {
-      if (!isAuthenticated) {
-        return null;
-      }
-
-      const token = await getAccessTokenSilently()
-
-      // console.log("TOKEN OBTENIDO : ", token)
-
-      return token;
-    },
-
-    // Pide token y devuelve los permisos
-    async getPermissions(): Promise<string[]> {
-      if(!isAuthenticated) {
-        return []
-      }
-
-      const token = await getAccessTokenSilently()
-
-      const payloadBase64 = token.split(".")[1]
-      const payloadJson = atob(payloadBase64)
-      const payload = JSON.parse(payloadJson) as JwtPayload
-
-      return payload.permissions ?? []
-    },
-
+    getAccessToken,
+    getPermissions,
+    hasAdminPermission,
+    hasDungeonMasterPermission,
   };
 }

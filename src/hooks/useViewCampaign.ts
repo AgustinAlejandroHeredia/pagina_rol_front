@@ -60,8 +60,7 @@ export function useViewCampaign(campaign_id: string) {
                     setIsDungeonMaster(true)
                 }
 
-                const perms = await authBridge.getPermissions()
-                if(perms.includes("admin:page")){
+                if(await authBridge.hasAdminPermission()){
                     setIsDungeonMaster(true)
                 }
 
@@ -87,7 +86,7 @@ export function useViewCampaign(campaign_id: string) {
             }
         }
         loadViewCampaign()
-    },[isAuthenticated])
+    },[campaign_id, isAuthenticated])
 
     return { campaign, map, view_users_data, isAuthenticated, loading, error }
 

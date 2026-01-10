@@ -7,6 +7,11 @@ export const CompendiumService = {
         return response.data
     },
 
+    isDungeonMaster: async (campaignId: string): Promise<boolean> => {
+        const response = await api.get<boolean>(`/campaigns/is_dungeon_master/${campaignId}`)
+        return response.data
+    },
+
     getCompendiumFiles: async (campaignId: string) => {
         const response = await api.get(`/backblaze/compendium/${campaignId}`)
         //console.log("COMPENDIUM CONTENT : ",response.data)

@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent } from "react"
 import { useCompendium } from "../hooks/useCompendium";
 import ViewCampaignError from "../components/ViewCampaignError";
 import Loading from "../components/Loading";
@@ -58,7 +58,7 @@ export function CompendiumPage() {
     const [creatingFolderSuccess, setCreatingFolderSucces] = useState(false)
     const [creatingFolderError, setCreatingFolderError] = useState(false)
 
-    const { compendium, isAuthenticated, isAdmin, loading, error, resetContent } = useCompendium(campaignId)
+    const { compendium, isAuthenticated, isDungeonMaster, loading, error, resetContent } = useCompendium(campaignId)
 
     if(loading) return <Loading />
     
@@ -306,6 +306,7 @@ export function CompendiumPage() {
                     </div>
                 ))}
 
+                {isAuthenticated && isDungeonMaster && (
                     <div
                         className={`create-campaign-button ${uploadingFile ? 'disabled' : ''}`}
                         onClick={() => handleUploadFile(undefined)}
@@ -313,6 +314,9 @@ export function CompendiumPage() {
                         {uploadingFile && <span className="spinner"></span>}
                         {uploadingFile ? ' Uploading...' : 'Upload File'}
                     </div>
+                )}
+
+
                 </div>
             )}
 
@@ -362,30 +366,30 @@ export function CompendiumPage() {
                     )}
 
                     {/* Upload and delete button for folder */}
-                    <div className="upload-actions">
+                    {isAuthenticated && isDungeonMaster &&  (
+                        <div className="upload-actions">
+                            <div
+                                className={`create-campaign-button ${uploadingFile ? 'disabled' : ''}`}
+                                onClick={() => handleUploadFile(folderName)}
+                            >
+                                {uploadingFile && <span className="spinner"></span>}
+                                {uploadingFile ? ' Uploading...' : 'Upload File'}
+                            </div>
 
-                        <div
-                            className={`create-campaign-button ${uploadingFile ? 'disabled' : ''}`}
-                            onClick={() => handleUploadFile(folderName)}
-                        >
-                            {uploadingFile && <span className="spinner"></span>}
-                            {uploadingFile ? ' Uploading...' : 'Upload File'}
+                            <div
+                                className={`eliminate-campaign-button delete-folder-button ${deletingFolder ? 'disabled' : ''}`}
+                                onClick={() => handleConfirmDeleteFolder(folderName)}
+                            >
+                                {deletingFolder && <span className="spinner"></span>}
+                                {deletingFolder ? ' Deleting...' : 'Delete Folder'}
+                            </div>
                         </div>
-
-                        <div
-                            className={`eliminate-campaign-button delete-folder-button ${deletingFolder ? 'disabled' : ''}`}
-                            onClick={() => handleConfirmDeleteFolder(folderName)}
-                        >
-                            {deletingFolder && <span className="spinner"></span>}
-                            {deletingFolder ? ' Deleting...' : 'Delete Folder'}
-                        </div>
-
-                    </div>
+                    )}
                 </div>
                 );
             })}
 
-            {!showCreateFolderOptions && (
+            {isAuthenticated && isDungeonMaster && !showCreateFolderOptions && (
                 <div 
                     className="create-campaign-button"
                     onClick={showNewFolderOptionsOn}    
@@ -394,7 +398,7 @@ export function CompendiumPage() {
                 </div>
             )}
 
-            {showCreateFolderOptions && (
+            {isAuthenticated && isDungeonMaster && showCreateFolderOptions && (
                 <div>
 
                     <div className="create-campaign-card">
