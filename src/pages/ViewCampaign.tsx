@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { ViewCampaignService } from '../services/ViewCampaignService'
+
 // HOOK
 import { useViewCampaign } from '../hooks/useViewCampaign'
 
@@ -20,7 +22,6 @@ import { SideCard } from '../components/SideCard'
 import { AddLocationPanel } from '../components/AddLocation'
 import { EditCampaign } from '../components/EditCampaign'
 import { ViewPlayers } from '../components/ViewPlayers'
-import { ViewCampaignService } from '../services/ViewCampaignService'
 import { ViewMapElem } from '../components/ViewMapElem'
 
 // MAP - LEAFLET
@@ -76,6 +77,28 @@ export function ViewCampaign() {
     const [selectedMapElem, setSelectedMapElem] = useState<MapElem | null>(null)
 
     const { campaign, map, view_users_data, isAuthenticated, loading, error } = useViewCampaign(campaignId)
+
+
+
+    // secutury
+    useEffect(() => {
+
+        const check = async () => {
+            try {
+                const isIn = await ViewCampaignService.isInCampaign(campaignId)
+                if(!isIn){
+                    navigate("/home")
+                }
+            } catch (error) {
+                console.log("Error during check")
+                navigate("/home")
+            }
+        }
+
+        if(isAuthenticated && !loading){
+            check()
+        }
+    }, [ campaignId, isAuthenticated, loading ])
 
 
 

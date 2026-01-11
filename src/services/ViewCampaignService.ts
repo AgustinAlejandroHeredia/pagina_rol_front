@@ -87,6 +87,6 @@ export const ViewCampaignService = {
     deleteMapElem: async (mapElemId: string) => {
         const response = await api.delete(`/mapelem/${mapElemId}`)
         return response.data
-    }
+    },
 
 }

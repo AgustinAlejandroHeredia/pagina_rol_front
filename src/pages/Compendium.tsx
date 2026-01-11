@@ -60,6 +60,26 @@ export function CompendiumPage() {
 
     const { compendium, isAuthenticated, isDungeonMaster, loading, error, resetContent } = useCompendium(campaignId)
 
+    // secutury
+    useEffect(() => {
+
+        const check = async () => {
+            try {
+                const isIn = await CompendiumService.isInCampaign(campaignId)
+                if(!isIn){
+                    navigate("/home")
+                }
+            } catch (error) {
+                console.log("Error during check")
+                navigate("/home")
+            }
+        }
+
+        if(isAuthenticated && !loading){
+            check()
+        }
+    }, [ campaignId, isAuthenticated, loading ])    
+
     if(loading) return <Loading />
     
     if(error){
