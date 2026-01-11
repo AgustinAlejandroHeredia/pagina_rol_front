@@ -10,6 +10,7 @@ import type { ViewPlayerType } from "../types/types"
 import { IoMdHelpCircle } from "react-icons/io";
 import { IoIosCloseCircle } from "react-icons/io";
 import { ViewCampaignService } from "../services/ViewCampaignService";
+import { RxExit } from "react-icons/rx";
 
 type ViewPlayersPanelProps = {
     campaign_id: string
@@ -43,6 +44,9 @@ export const ViewPlayers = ({
     const [exists, setExists] = useState(false)
 
     const [loading, setLoading] = useState(false)
+
+    const [kickPlayerError, setKickPlayerError] = useState(false)
+    const [kickPlayerSuccess, setKickPlayerSuccess] = useState(false)
 
     const emailRegex =/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -93,6 +97,19 @@ export const ViewPlayers = ({
         }
     }
 
+    const kickPlayer = async (alias: string) => {
+        
+        setKickPlayerError(false)
+        setKickPlayerSuccess(false)
+        
+        try {
+            await ViewCampaignService.kickPlayer(campaign_id, alias)
+            setKickPlayerSuccess(true)
+        } catch (error) {
+            setKickPlayerError(true)
+        }
+    }
+
     return (
 
         <div>
@@ -101,15 +118,42 @@ export const ViewPlayers = ({
 
             <Stack spacing={3}>
 
+                {kickPlayerError && (
+                    <div className="create-campaign-message-unsuccessful">Error quicking this player, please try again later.</div>
+                )}
+
+                {kickPlayerSuccess && (
+                    <div className="create-campaign-message-successful">Player quicked.</div>
+                )}
+
                 <div className="players-list">
                     {players.length === 0 ? (
                         <h4>No hay usuarios</h4>
                     ) : (
                         <ul>
                             {players.map((player) => (
-                                <li key={player.alias}>
-                                    <strong>{player.name}</strong> in the role of{' '}
-                                    <em>{player.alias}</em>
+                                <li 
+                                    key={player.alias}
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '6px 0',
+                                    }}
+                                >
+                                    <span>
+                                        <strong>{player.name}</strong> in the role of{' '}
+                                        <em>{player.alias}</em>
+                                    </span>
+
+                                    {isDungeonMaster && player.alias != 'Dungeon Master' && (
+                                        <RxExit
+                                            size={18}
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => kickPlayer(player.alias)}
+                                        />
+                                    )}
+
                                 </li>
                             ))}
                         </ul>

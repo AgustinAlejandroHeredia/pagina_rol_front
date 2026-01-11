@@ -24,9 +24,8 @@ export function useHome() {
     useEffect(() => {
         const loadHome = async () => {
             try {
-
-                const perms = await authBridge.getPermissions()
-                if(perms.includes("admin:page")){
+                
+                if(await authBridge.hasAdminPermission){
                     setIsAdmin(true)
                 }
 

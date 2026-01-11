@@ -59,6 +59,11 @@ export const ViewCampaignService = {
         return response.data
     },
 
+    kickPlayer: async (campaignId: string, alias: string) => {
+        const response = await api.delete(`/campaigns/kickPLayer/${campaignId}/${alias}`)
+        return response.data
+    },
+
     uploadMap: async (campaignId: string, formData: FormData) => {
         const response = await api.post<string>(`/backblaze/uploadCampaignMap/${campaignId}`, formData)
         return response.data

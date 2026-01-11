@@ -58,23 +58,27 @@ export function HomePage() {
         <div>
           <h5 className="page-sub-message">Your current campaigns:</h5>
 
-          {campaigns.map((campaign) => (
-            <div 
-              key={campaign._id} 
-              className="info-card"
-              onClick={() => handleOpenCampaign(campaign._id)}
-            >
-              <h4>{campaign.campaignName}</h4>
+          {campaigns.length === 0 ? (
+            <h4>No campaigns for now.</h4>
+          ) : (
+            campaigns.map((campaign) => (
+              <div
+                key={campaign._id}
+                className="info-card"
+                onClick={() => handleOpenCampaign(campaign._id)}
+              >
+                <h4>{campaign.campaignName}</h4>
 
-              {campaign.players.map((player, index) => (
-                <div key={`${player.alias}-${index}`}>
-                  <h5>
-                    - {player.realName} in the role of {player.alias}
-                  </h5>
-                </div>
-              ))}
-            </div>
-          ))}
+                {campaign.players.map((player, index) => (
+                  <div key={`${player.alias}-${index}`}>
+                    <h5>
+                      - {player.realName} in the role of {player.alias}
+                    </h5>
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
         </div>
       )}
 
