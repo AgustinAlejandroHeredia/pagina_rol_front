@@ -926,6 +926,115 @@ p, h1, h2, h3 {
 
 
 
+.file-name {
+  flex: 1;
+  display: flex;
+  align-items: center;
+
+  color: var(--color-text);
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* HOVER nombre */
+.file-name:hover {
+  transform: translateY(-2px) scale(1.03);
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* CLICK */
+.file-name:active {
+  transform: translateY(0) scale(1.01);
+}
+
+
+
+.file-delete {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  color: var(--color-text);
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* HOVER borrar */
+.file-delete:hover {
+  transform: translateY(-2px) scale(1.1);
+  background-color: rgba(255, 80, 80, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  color: #ff6b6b;
+}
+
+/* CLICK */
+.file-delete:active {
+  transform: translateY(0) scale(1.05);
+}
+
+
+
+.file-view {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  color: var(--color-text);
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* HOVER borrar */
+.file-view:hover {
+  transform: translateY(-2px) scale(1.1);
+  background-color: var(--color-navbar-plus);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  color: var(--color-text);
+}
+
+/* CLICK */
+.file-view:active {
+  transform: translateY(0) scale(1.05);
+}
+
+
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+
+
+
 
 
 .text-area {

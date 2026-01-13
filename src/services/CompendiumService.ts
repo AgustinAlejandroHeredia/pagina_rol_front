@@ -41,4 +41,13 @@ export const CompendiumService = {
         return response.data
     },
 
+    changeViewSetting: async (fileId: string, visibility: boolean) => {
+        console.log("CURRENT VISIBILITY IS : ",{visibility})
+        const response = await api.patch(
+            `/filemongoreg/${fileId}`, 
+            { visibility }
+        )
+        return response.data
+    },
+
 }

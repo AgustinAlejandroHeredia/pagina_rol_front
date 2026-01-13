@@ -12,6 +12,7 @@ export function useCompendium (campaign_id: string){
     type FileItem = {
         name: string
         fileId: string
+        visibility: boolean
     }
 
     type GroupedFiles = {
@@ -52,7 +53,6 @@ export function useCompendium (campaign_id: string){
 
         files.forEach(file => {
 
-            // ───────── ROOT FILE ─────────
             if (!file.name.includes('/')) {
                 result.root.push(file)
                 return
@@ -60,20 +60,18 @@ export function useCompendium (campaign_id: string){
 
             const [folder, filename] = file.name.split('/', 2)
 
-            // aseguramos carpeta
             if (!result.folders[folder]) {
                 result.folders[folder] = []
             }
 
-            // ───────── .keep → solo estructura ─────────
             if (filename === '.keep' || filename === '.bzEmpty') {
             return
             }
 
-            // ───────── archivo real ─────────
             result.folders[folder].push({
                 name: filename,
                 fileId: file.fileId!,
+                visibility: file.visibility,
             })
         })
 

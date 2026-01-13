@@ -13,6 +13,10 @@ import { FaArrowAltCircleDown } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { CompendiumService } from "../services/CompendiumService";
 
+import { IoEyeOutline } from "react-icons/io5"; // <IoEyeOutline />
+import { IoEyeOffOutline } from "react-icons/io5"; // <IoEyeOffOutline />
+
+
 export function CompendiumPage() {
 
     const navigate = useNavigate()
@@ -49,6 +53,8 @@ export function CompendiumPage() {
     const [uploadingFile, setUploadingFile] = useState(false)
     const [succesfulUpload, setSuccessfulUpload] = useState(false)
     const [uploadError, setUploadError] = useState(false)
+
+    const [errorOnViewChange, setErrorOnViewChange] = useState(false)
 
     // FOLDERS
 
@@ -94,6 +100,7 @@ export function CompendiumPage() {
         setUploadError(false)
         setCreatingFolderSucces(false)
         setCreatingFolderError(false)
+        setErrorOnViewChange(false)
     }
 
     const toggleFolder = (folderName: string) => {
@@ -167,6 +174,18 @@ export function CompendiumPage() {
             setDeletingFile(false)
             setShowConfirmFile(false)
             setFileToDelete(null)
+        }
+    }
+
+    const handleFilePlayersViewChange = async (fileId: string, currentVisibility: boolean) => {
+        if(!fileId) return
+    
+        setErrorOnViewChange(false)
+        try {
+            await CompendiumService.changeViewSetting(fileId, currentVisibility)
+            resetContent()
+        } catch (error) {
+            setErrorOnViewChange(true)
         }
     }
 
@@ -309,19 +328,37 @@ export function CompendiumPage() {
             {compendium.root.length > 0 && (
                 <div className="compendium-card">
                 {compendium.root.map((file) => (
-                    <div key={file.fileId} className="file-item" onClick={() => handleViewFile(file.fileId, file.name)}>
-                        
-                        <span>
-                            {file.name}
-                        </span>
+                    <div key={file.fileId} className="file-row">
 
-                        <MdDeleteOutline
-                            style={{ cursor: "pointer", marginLeft: "8px" }}
+                        <div 
+                            className="file-name" 
+                            onClick={() => handleViewFile(file.fileId, file.name)}
+                        >
+                            <span>{file.name}</span>
+                        </div>
+
+                        <div 
+                            className="file-delete"
                             onClick={(e) => {
                                 e.stopPropagation()
                                 handleConfirmDeleteFile(file.name, file.fileId)
                             }}
-                        />
+                        >
+                            <MdDeleteOutline/>
+                        </div>
+
+                        <div 
+                            className="file-view"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleFilePlayersViewChange(file.fileId, file.visibility)
+                            }}
+                        >
+                            {file.visibility 
+                                ? <IoEyeOutline/>
+                                : <IoEyeOffOutline/>
+                            }
+                        </div>
 
                     </div>
                 ))}
@@ -335,7 +372,6 @@ export function CompendiumPage() {
                         {uploadingFile ? ' Uploading...' : 'Upload File'}
                     </div>
                 )}
-
 
                 </div>
             )}
@@ -366,19 +402,39 @@ export function CompendiumPage() {
                                 </div>
                             ) : (
                                 files.map((file) => (
-                                    <div key={file.fileId} className="file-item" onClick={() => handleViewFile(file.fileId, file.name)}>
+                                    <div key={file.fileId} className="file-row">
 
-                                        <span>
-                                            {file.name}
-                                        </span>
+                                        <div 
+                                            className="file-name" 
+                                            onClick={() => handleViewFile(file.fileId, file.name)}
+                                        >
+                                            <span>{file.name}</span>
+                                        </div>
 
-                                        <MdDeleteOutline
-                                            style={{ cursor: "pointer", marginLeft: "8px" }}
+                                        <div 
+                                            className="file-delete"
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 handleConfirmDeleteFile(file.name, file.fileId)
                                             }}
-                                        />
+                                        >
+                                            <MdDeleteOutline/>
+                                        </div>
+                                        
+                                        {isDungeonMaster}
+                                        <div 
+                                            className="file-view"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                handleFilePlayersViewChange(file.fileId, file.visibility)
+                                            }}
+                                        >
+                                            {file.visibility 
+                                                ? <IoEyeOutline/>
+                                                : <IoEyeOffOutline/>
+                                            }
+                                        </div>
+
                                     </div>
                                 ))
                             )}
