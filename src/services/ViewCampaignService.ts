@@ -42,7 +42,12 @@ export const ViewCampaignService = {
     createMapLocation: async (campaignId: string, formData: NewMapElem) => {
         const response = await api.post(
             `/mapelem/${campaignId}`, 
-            formData
+            formData,
+            {
+                headers: {
+                    'Content-Type' : 'multipart/form-data',
+                },
+            }
         )
         return response.data
     },
@@ -84,8 +89,24 @@ export const ViewCampaignService = {
         return response.data
     },
 
-    deleteMapElem: async (mapElemId: string) => {
-        const response = await api.delete(`/mapelem/${mapElemId}`)
+    deleteMapElem: async (mapElemId: string, pictureId: string) => {
+        const response = await api.delete(`/mapelem/${mapElemId}`,
+            {
+                params: {
+                    pictureId
+                }
+            }
+        )
+        return response.data
+    },
+
+    getMapElemPicture: async (mapElemPictureId: string) => {
+        const response = await api.get(
+            `/backblaze/getFileById/${mapElemPictureId}`,
+            {
+                responseType: 'blob',
+            }
+        )
         return response.data
     },
 

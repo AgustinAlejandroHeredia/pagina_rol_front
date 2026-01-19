@@ -28,6 +28,7 @@ export interface MapElem {
   layer: number,
   x: number,
   y: number,
+  pictureId: string,
 }
 
 export interface PlayerCampaign {

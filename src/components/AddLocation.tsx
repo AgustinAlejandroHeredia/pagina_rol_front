@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent } from "react"
 import { ViewCampaignService } from "../services/ViewCampaignService"
 
 import type { MapCoords } from "./campaign-map/CampaignMap.types"
@@ -22,6 +22,11 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
     const [done, setDone] = useState(false)
     const [error, setError] = useState(false)
 
+    // Picture
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [choosingPicture, setChoosingPicture] = useState(false)
+
     const createLocation = async () => {
         
         if(
@@ -42,6 +47,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                 layer: formData.layer,
                 x: coords.x,
                 y: coords.y,
+                file: selectedImage,
             }
 
             await ViewCampaignService.createMapLocation(campaignId, payload)
@@ -97,6 +103,30 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
         }))
     }
 
+    const handleSelectPicture = async () => {
+        if(fileInputRef.current){
+            fileInputRef.current.value=""
+        }
+        setChoosingPicture(true)
+        fileInputRef.current?.click()
+    }
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+
+        setChoosingPicture(false)
+
+        if(!file) return
+
+        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"]
+        if(!allowedTypes.includes(file.type)){
+            alert("Only png, jpeg and jpg are allowed files.")
+            return
+        }
+
+        setSelectedImage(file)
+    }
+
     return (
         <div className="add-location-panel">
 
@@ -108,10 +138,10 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                 <TextField
                     fullWidth
                     name="name"
-                    label="Name"
+                    label="Name *"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Name"
+                    placeholder="Name *"
                     variant="outlined"
                     sx={{
                         '& .MuiInputLabel-root': {
@@ -152,10 +182,10 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                     multiline
                     rows={5}
                     name="description"
-                    label="Description"
+                    label="Description *"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="Description"
+                    placeholder="Description *"
                     variant="outlined"
                     sx={{
                         '& .MuiInputLabel-root': {
@@ -190,6 +220,31 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                     }}
                 />
 
+                {/* LOCATION PICTURE */}
+                <div className="upload-actions">
+                    <div className="create-campaign-button"
+                        onClick={handleSelectPicture}
+                    >
+                        {choosingPicture && <span className="spinner"></span>}
+                        {choosingPicture ? ' Choosing...' : 'Choose Location Picture'}
+                    </div>
+                </div>
+
+                {/* LOCATION PICTURE NAME */}
+                {selectedImage && (
+                    <div>
+                        Selected img: {selectedImage.name}
+                    </div>
+                )}
+
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                />
+
                 {/* LOCATION TYPE */}
                 <FormControl fullWidth>
                     <InputLabel
@@ -203,7 +258,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                         },
                     }}
                     >
-                    Type
+                    Type *
                     </InputLabel>
                     <Select
                     labelId="type-label"
@@ -274,8 +329,8 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                     }
                     label={
                     formData.visible
-                        ? 'Visible for players'
-                        : 'Not visible for players'
+                        ? 'Visible for players *'
+                        : 'Not visible for players *'
                     }
                 />
 
@@ -283,7 +338,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                 <TextField
                     fullWidth
                     name="layer"
-                    label="Layer where is located"
+                    label="Layer where is located *"
                     value={formData.layer}
                     onChange={handleChange}
                     placeholder="Layer (number)"
@@ -352,7 +407,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                         onClick={onChooseLocation}
                     >
                         {choosingLocation && <span className="spinner"></span>}
-                        {choosingLocation ? ' Choosing...' : 'Choose Map Location'}
+                        {choosingLocation ? ' Choosing...' : 'Choose Map Location *'}
                     </div>
 
                     {choosingLocation && (

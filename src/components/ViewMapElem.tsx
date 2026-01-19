@@ -41,7 +41,35 @@ export const ViewMapElem = ({
     const [originalPlayersView, setOriginalPlayersView] = useState(mapElem.visible)
     const [newPlayersView, setNewPlayersView] = useState(originalPlayersView)
 
+    // picture
+    const [loadingPicture, setLoadingPicture] = useState(false)
+    const [picture, setPicture] = useState<Blob | null>(null)
+    const [pictureUrl, setPictureUrl] = useState<string | null>(null)
+
+
+
+
+
     useEffect(() => {
+
+        const getMapElemPicture = async() => {
+            try {
+                setLoadingPicture(true)
+                const picture = await ViewCampaignService.getMapElemPicture(mapElem.pictureId)
+                setLoadingPicture(false)
+                if(picture){
+                    setPicture(picture)
+                }
+            } catch (error) {
+                console.log("Error loading map location picture")
+            }
+        }
+
+        setPicture(null)
+        if(mapElem.pictureId){
+            getMapElemPicture()
+        }
+
         setOriginalPlayersView(mapElem.visible)
         setNewPlayersView(mapElem.visible)
 
@@ -51,6 +79,24 @@ export const ViewMapElem = ({
 
         setShowOptions(true)
     }, [mapElem._id])
+
+    useEffect(() => {
+        if (!picture) {
+            setPictureUrl(null)
+            return
+        }
+
+        const objectUrl = URL.createObjectURL(picture)
+        setPictureUrl(objectUrl)
+
+        return () => {
+            URL.revokeObjectURL(objectUrl)
+        }
+    }, [picture])
+
+
+
+
 
     const handleSwitchChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -133,7 +179,7 @@ export const ViewMapElem = ({
 
         try {
             setDeleting(true)
-            await ViewCampaignService.deleteMapElem(mapElem._id)
+            await ViewCampaignService.deleteMapElem(mapElem._id, mapElem.pictureId)
             setDeletingSuccess(true)
             setShowOptions(false)
 
@@ -263,6 +309,24 @@ export const ViewMapElem = ({
                 )}
 
                 <div className="map-elem-card">
+
+                    {mapElem.pictureId && (
+                        <div className="map-elem-picture-container">
+
+                            {loadingPicture && (
+                                <span className="spinner" />
+                            )}
+
+                            {!loadingPicture && pictureUrl && (
+                                <img
+                                    src={pictureUrl}
+                                    alt={mapElem.name}
+                                    className="map-elem-picture"
+                                />
+                            )}
+
+                        </div>
+                    )}
 
                     <h4 className="map-elem-title fantasy">{mapElem.name}, {prettyFormat(mapElem.type)}</h4>
 

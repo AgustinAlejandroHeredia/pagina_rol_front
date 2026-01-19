@@ -1205,3 +1205,22 @@ p, h1, h2, h3 {
   font-family: 'IM Fell English SC', serif;
   letter-spacing: 0.12em;
 }
+
+
+
+
+
+.map-elem-picture-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.map-elem-picture {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-navbar);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+}
