@@ -64,16 +64,44 @@ body {
   padding: 1rem;
 }
 
-.content-and-background {
+.content-and-background2 {
   padding: 1rem;
 
   flex: 1;
   background: linear-gradient(
-    135deg,
-    #020e3b 0%,
-    #08165a 45%,
-    #120b3f 100%
+    180deg,
+    #1a2650 0%,       /* más claro arriba */
+    #08165a 35%,      /* intermedio */
+    #020e3b 75%,      /* color principal de fondo */
+    var(--color-navbar) 105%  /* termina más rápido, menos espacio morado */
   );
+}
+
+.content-and-background {
+  padding: 1rem;
+  flex: 1;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: linear-gradient(
+    135deg,
+    rgba(24, 12, 50, 0.6) 0%,   /* morado más oscuro y transparente */
+    #1a2650 10%,                 /* más claro arriba */
+    #08165a 40%,                 /* intermedio */
+    #020e3b 75%,                 /* color principal de fondo */
+    var(--color-navbar) 105%     /* morado final abajo-derecha */
+  );
+
+  background-size: 300% 300%;
+  animation: gradient-diagonal 12s ease infinite;
+}
+
+@keyframes gradient-diagonal {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
 }
 
 .navbar {

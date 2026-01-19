@@ -28,7 +28,7 @@ export function LoginPage() {
           />
 
           <h1 className="fantasy">
-            Welcome to Rolaplay Web App
+            Welcome to Nat20 Rolaplay
           </h1>
 
           <div className="page-message">

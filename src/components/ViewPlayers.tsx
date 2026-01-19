@@ -191,7 +191,7 @@ export const ViewPlayers = ({
                     </div>
 
                     <div>
-                        <h4 className="page-message">Here u can write down the player's email to send them an invitation that is valid for 12 hours. The'll have to go "Home", "Join new campaign" and enter the code there, and the'll be added automatically to your campaign.</h4>
+                        <h4 className="page-message">Here u can write down the player's email to send them an invitation that is valid for 12 hours. They'll have to go "Home", "Join new campaign" and enter the code there, and they'll be added automatically to your campaign.</h4>
                     </div>
 
                 </div>

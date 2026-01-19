@@ -21,6 +21,7 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
     const [showMessageOfEmpty, setShowMessageOfEmpty] = useState(false)
     const [done, setDone] = useState(false)
     const [error, setError] = useState(false)
+    const [creating, setCreating] = useState(false)
 
     // Picture
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -40,6 +41,8 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
             return
         }
 
+        setCreating(true)
+
         try{
             setShowMessageOfEmpty(false)
             const payload = {
@@ -58,6 +61,8 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
             console.log('Error creating new location : ', error)
             setDone(true)
             setError(true)
+        } finally {
+            setCreating(false)
         }
     }
 
@@ -450,7 +455,8 @@ export const AddLocationPanel = ({ campaignId, onSuccess , onChooseLocation, coo
                 )}
 
                 <div className="create-campaign-button" onClick={createLocation}>
-                    Add location +
+                    {creating && <span className="spinner"></span>}
+                    {creating ? 'Adding location...' : 'Add Location +'}
                 </div>
 
             </Stack>
