@@ -64,6 +64,18 @@ body {
   padding: 1rem;
 }
 
+.content-and-background {
+  padding: 1rem;
+
+  flex: 1;
+  background: linear-gradient(
+    135deg,
+    #020e3b 0%,
+    #08165a 45%,
+    #120b3f 100%
+  );
+}
+
 .navbar {
   height: 64px;
   width: 100%;
@@ -106,6 +118,66 @@ body {
   background-size: 600% 600%;
 
   animation: gradientBorder 6s ease infinite;
+}
+
+.login-card .logo-img {
+  width: 96px;
+  height: 96px;
+  padding: 4px;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding-top: 12vh;
+}
+
+.login-card {
+  position: relative;
+  background-color: var(--color-navbar);
+  border-radius: 12px;
+
+  padding: 2.5rem 2rem;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  text-align: center;
+
+  max-width: 420px;
+  width: 100%;
+}
+
+.login-background {
+  min-height: 100vh;
+
+  background: linear-gradient(
+    135deg,
+    #60a5fa 0%,
+    #22c55e 35%,
+    #a855f7 70%,
+    #60a5fa 100%
+  );
+
+  background-size: 300% 300%;
+  animation: gradientMove 14s ease infinite;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .welcome-text {
@@ -260,9 +332,19 @@ body {
   white-space: nowrap;
 }
 
-.btn-outline:hover {
-  border-color: var(--color-border_action);
-  color: var(--color-border_action);
+.btn-outline.danger:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.btn-outline.success:hover {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.btn-outline.lg {
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
 }
 
 .page-title {

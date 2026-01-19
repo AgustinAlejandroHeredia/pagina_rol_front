@@ -72,7 +72,7 @@ export const Navbar = () => {
         {currentPath.startsWith('/view_campaign') && (
           <div className="navbar-campaign-area">
             {isLoadingCampaign ? (
-              <div className="welcome-text">Cargando...</div>
+              <div className="welcome-text">Loading...</div>
             ) : (
               <div className="campaign-options">
 
@@ -196,7 +196,7 @@ export const Navbar = () => {
                 <p className="user-email">{user.email}</p>
 
                 <div className="user-card-actions">
-                  <LogoutButton className="btn-outline"/>
+                  <LogoutButton className="btn-outline danger"/>
                 </div>
               </div>
             )}
