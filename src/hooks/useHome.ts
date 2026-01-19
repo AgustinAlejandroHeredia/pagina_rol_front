@@ -25,11 +25,11 @@ export function useHome() {
         const loadHome = async () => {
             try {
                 
+                setLoading(true)
+
                 if(await authBridge.hasAdminPermission){
                     setIsAdmin(true)
                 }
-
-                setLoading(true)
 
                 const campaignsData = await HomeService.getUserCampaigns()
                 setCampaigns(campaignsData)

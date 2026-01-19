@@ -39,6 +39,7 @@ export interface PlayerCampaign {
 }
 
 export interface Campaign {
+  _id: string,
   name: string,
   description: string,
   dungeonMaster: string,
@@ -57,4 +58,17 @@ export interface UpdateCampaign {
 export interface ViewPlayerType {
   name: string,
   alias: string,
+}
+
+export interface Invite {
+  campaign_id: string,
+  from_mongo_id: string,
+  for_mongo_id: string,
+  expires_at: Date,
+  token: string,
+}
+
+export interface User {
+  name: string,
+  email: string,
 }
