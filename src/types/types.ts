@@ -36,13 +36,14 @@ export interface PlayerCampaign {
   auth0_id: string,
   name: string,
   email: string,
+  alias: string,
 }
 
 export interface Campaign {
   _id: string,
   name: string,
   description: string,
-  dungeonMaster: string,
+  dungeonMaster: PlayerCampaign,
   system: string,
   users: PlayerCampaign[],
   mapElems: MapElem[],
@@ -61,6 +62,7 @@ export interface ViewPlayerType {
 }
 
 export interface Invite {
+  _id: string,
   campaign_id: string,
   from_mongo_id: string,
   for_mongo_id: string,
@@ -69,6 +71,7 @@ export interface Invite {
 }
 
 export interface User {
+  _id: string,
   name: string,
   email: string,
 }

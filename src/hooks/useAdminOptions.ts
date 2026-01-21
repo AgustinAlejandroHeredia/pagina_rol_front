@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAuth0Bridge } from '../auth/auth0-bridge'
 import { useAuth0 } from "@auth0/auth0-react";
@@ -19,47 +19,51 @@ export function useAdminOptions() {
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
     // INFO
-    const [campaigns, setCampaigns] = useState<Campaign | null>(null)
-    const [invites, setInvites] = useState<Invite | null>(null)
-    const [users, setUsers] = useState<User | null>(null)
+    const [campaigns, setCampaigns] = useState<Campaign[]>([])
+    const [invites, setInvites] = useState<Invite[]>([])
+    const [users, setUsers] = useState<User[]>([])
 
-    const authBridge = useAuth0Bridge()
+    const { hasAdminPermission } = useAuth0Bridge()
+
+    const loadAdminOptions = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+
+            const permissions = await hasAdminPermission()
+            setIsAdmin(permissions)
+
+            if(!permissions){
+                setCampaigns([])
+                setInvites([])
+                setUsers([])
+                return
+            }
+
+            const campaigns = await AdminOptionsService.getCampaignsAsAdmin()
+            setCampaigns(campaigns)
+            //console.log("CAMPAIGNS : ", campaigns)
+
+            const invites = await AdminOptionsService.getInvitesAsAdmin()
+            setInvites(invites)
+            //console.log("INVITES : ", invites)
+
+            const users = await AdminOptionsService.getUsersAsAdmin()
+            setUsers(users)
+            //console.log("USERS : ", users)
+
+        } catch (error: any) {
+            console.error("Error en useAdminOptions: ", error)
+            setError(error.message || "Error desconocido")
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const loadAdminOptions = async () => {
-
-            setLoading(true)
-
-            try {
-
-                const permissions = await authBridge.hasAdminPermission()
-                setIsAdmin(permissions)
-
-                const campaigns = await AdminOptionsService.getCampaignsAsAdmin()
-                setCampaigns(campaigns)
-                console.log("CAMPAIGNS : ")
-                console.log(campaigns)
-
-                const invites = await AdminOptionsService.getInvitesAsAdmin()
-                setInvites(invites)
-                console.log("INVITES : ")
-                console.log(invites)
-
-                const users = await AdminOptionsService.getUsersAsAdmin()
-                setUsers(users)
-                console.log("USERS : ")
-                console.log(users)
-
-            } catch (error: any) {
-                console.error("Error en useAdminOptions: ", error)
-                setError(error.message || "Error desconocido")
-            } finally {
-                setLoading(false)
-            }
-        }
         loadAdminOptions()
     }, [])
 
-    return { campaigns, invites, users, isAdmin, loading, error }
+    return { campaigns, invites, users, isAdmin, loading, error, refetch: loadAdminOptions }
 
 }
